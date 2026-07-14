@@ -124,22 +124,22 @@ h2 em{font-style:normal;background:linear-gradient(120deg,var(--accent),var(--ac
   container-type:size}
 .hslide .fit img{width:100%;height:100%;display:block}
 .hslide .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,5,5,.55),rgba(5,5,5,.3) 45%,rgba(5,5,5,.68))}
-.fit-log3{width:min(100vw,66vh);aspect-ratio:684/1280}
-.fit-log4{width:min(100vw,93vh);aspect-ratio:736/981}
+.fit-log5{width:min(100vw,88vh);aspect-ratio:736/1041}
+.fit-log2{width:min(100vw,83vh);aspect-ratio:736/1104}
 /* clock hands overlay (slide 2) */
-.clockPlane{position:absolute;left:49.7%;top:51%;width:0;height:0;
-  transform:rotate(-14deg) scaleY(.32)}
+.clockPlane{position:absolute;left:49.6%;top:56%;width:0;height:0;
+  transform:rotate(-8deg) scaleY(.45)}
 .hand{position:absolute;left:0;bottom:0;transform-origin:50% 100%;border-radius:99px}
-.hand.min{width:2cqw;height:64cqw;margin-left:-1cqw;
-  background:linear-gradient(180deg,#eaf6ff,rgba(234,246,255,.15));
-  box-shadow:0 0 14px rgba(150,220,255,.5);opacity:.85;
+.hand.min{width:1.5cqw;height:24cqw;margin-left:-.75cqw;
+  background:linear-gradient(180deg,#f6d27a,rgba(246,210,122,.12));
+  box-shadow:0 0 12px rgba(246,210,122,.55);opacity:.9;
   animation:handMin 240s linear infinite}
-.hand.sec{width:.9cqw;height:80cqw;margin-left:-.45cqw;
-  background:linear-gradient(180deg,#ffd94d,rgba(255,217,77,.1));
-  box-shadow:0 0 10px rgba(255,217,77,.6);opacity:.9;
+.hand.sec{width:.7cqw;height:31cqw;margin-left:-.35cqw;
+  background:linear-gradient(180deg,#ffe9a8,rgba(255,233,168,.1));
+  box-shadow:0 0 10px rgba(255,233,168,.65);opacity:.95;
   animation:handSec 60s linear infinite}
-.clockPlane .pivot{position:absolute;left:-1.5cqw;top:-1.5cqw;width:3cqw;height:3cqw;border-radius:50%;
-  background:#ffd94d;box-shadow:0 0 12px rgba(255,217,77,.8)}
+.clockPlane .pivot{position:absolute;left:-1.2cqw;top:-1.2cqw;width:2.4cqw;height:2.4cqw;border-radius:50%;
+  background:#f6d27a;box-shadow:0 0 12px rgba(246,210,122,.9)}
 /* readable gold title over photo slides */
 #hero.photoMode #heroTitle .w{
   filter:drop-shadow(0 2px 5px rgba(0,0,0,.95)) drop-shadow(0 0 22px rgba(0,0,0,.8));
@@ -332,9 +332,9 @@ footer{
   </div>
   <div class="hslide" id="hs2">
     <div class="cover">
-      <div class="blurbg" style="background-image:url(log3.jpeg)"></div>
-      <div class="fit fit-log3">
-        <img src="log3.jpeg" alt="">
+      <div class="blurbg" style="background-image:url(log5.jpeg)"></div>
+      <div class="fit fit-log5">
+        <img src="log5.jpeg" alt="">
         <div class="clockPlane">
           <div class="hand min"></div>
           <div class="hand sec"></div>
@@ -346,9 +346,9 @@ footer{
   </div>
   <div class="hslide" id="hs3">
     <div class="cover">
-      <div class="blurbg" style="background-image:url(log4.jpeg)"></div>
-      <div class="fit fit-log4">
-        <img src="log4.jpeg" alt="">
+      <div class="blurbg" style="background-image:url(log2.jpeg)"></div>
+      <div class="fit fit-log2">
+        <img src="log2.jpeg" alt="">
         <canvas class="sandCanvas" id="sandCanvas"></canvas>
       </div>
     </div>
@@ -769,7 +769,7 @@ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   function size(){W=c.width=frame.clientWidth*DPR;H=c.height=frame.clientHeight*DPR;}
   size();addEventListener('resize',size);
   // hourglass geometry in fractions of the log4 image
-  const NECK_X=.512,NECK_Y=.45,FLOOR_Y=.78;
+  const NECK_X=.521,NECK_Y=.505,FLOOR_Y=.64;
   const grains=[];
   function spawn(){
     grains.push({

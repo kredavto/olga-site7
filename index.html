@@ -112,6 +112,40 @@ h2 em{font-style:normal;background:linear-gradient(120deg,var(--accent),var(--ac
   align-items:center;justify-content:center;text-align:center;padding-top:140px;
 }
 #sphereCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+
+/* --- hero slides --- */
+.hslide{position:absolute;inset:0;opacity:0;transition:opacity 1.8s ease;pointer-events:none}
+.hslide.on{opacity:1}
+.hslide .cover{position:absolute;inset:0;overflow:hidden}
+.hslide .frame{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
+.hslide .frame img{width:100%;height:100%;display:block;object-fit:fill}
+.hslide .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,5,5,.45),rgba(5,5,5,.25) 45%,rgba(5,5,5,.6))}
+/* frame sizes emulate background-size:cover per image aspect */
+.frame-log3{width:max(100vw,53.4vh);height:max(100vh,187.1vw)}
+.frame-log4{width:max(100vw,75vh);height:max(100vh,133.3vw)}
+/* clock hands overlay (slide 2) */
+.clockPlane{position:absolute;left:49.7%;top:51%;width:0;height:0;
+  transform:rotate(-14deg) scaleY(.32)}
+.hand{position:absolute;left:0;bottom:0;transform-origin:50% 100%;border-radius:99px}
+.hand.min{width:1.1vmin;height:36vmin;margin-left:-0.55vmin;
+  background:linear-gradient(180deg,#eaf6ff,rgba(234,246,255,.15));
+  box-shadow:0 0 14px rgba(150,220,255,.5);opacity:.85;
+  animation:handMin 240s linear infinite}
+.hand.sec{width:.45vmin;height:44vmin;margin-left:-0.225vmin;
+  background:linear-gradient(180deg,#ffd94d,rgba(255,217,77,.1));
+  box-shadow:0 0 10px rgba(255,217,77,.6);opacity:.9;
+  animation:handSec 60s linear infinite}
+.clockPlane .pivot{position:absolute;left:-0.8vmin;top:-0.8vmin;width:1.6vmin;height:1.6vmin;border-radius:50%;
+  background:#ffd94d;box-shadow:0 0 12px rgba(255,217,77,.8)}
+@keyframes handSec{from{transform:rotate(120deg)}to{transform:rotate(480deg)}}
+@keyframes handMin{from{transform:rotate(-65deg)}to{transform:rotate(295deg)}}
+/* sand canvas (slide 3) */
+.sandCanvas{position:absolute;inset:0;width:100%;height:100%}
+/* slide dots */
+.hero-dots{position:absolute;bottom:148px;left:50%;transform:translateX(-50%);z-index:5;display:flex;gap:12px}
+.hero-dots button{width:34px;height:3px;border:none;border-radius:2px;cursor:pointer;
+  background:rgba(255,255,255,.22);transition:background .4s;padding:0}
+.hero-dots button.on{background:linear-gradient(90deg,var(--accent),#f6e27a)}
 .hero-inner{position:relative;z-index:2;max-width:1100px}
 #heroTitle{
   font-family:'Cormorant',serif;
@@ -285,7 +319,32 @@ footer{
 
 <!-- HERO -->
 <section id="hero">
-  <canvas id="sphereCanvas"></canvas>
+  <div class="hslide on" id="hs1">
+    <canvas id="sphereCanvas"></canvas>
+  </div>
+  <div class="hslide" id="hs2">
+    <div class="cover"><div class="frame frame-log3">
+      <img src="log3.jpeg" alt="">
+      <div class="clockPlane">
+        <div class="hand min"></div>
+        <div class="hand sec"></div>
+        <div class="pivot"></div>
+      </div>
+    </div></div>
+    <div class="shade"></div>
+  </div>
+  <div class="hslide" id="hs3">
+    <div class="cover"><div class="frame frame-log4">
+      <img src="log4.jpeg" alt="">
+      <canvas class="sandCanvas" id="sandCanvas"></canvas>
+    </div></div>
+    <div class="shade"></div>
+  </div>
+  <div class="hero-dots" id="heroDots">
+    <button class="on" aria-label="slide 1"></button>
+    <button aria-label="slide 2"></button>
+    <button aria-label="slide 3"></button>
+  </div>
   <div class="hero-inner">
     <h1 id="heroTitle"></h1>
     <p class="hero-sub">ИИ <b>•</b> Автоматизация <b>•</b> Digital <b>•</b> Motion Design <b>•</b> Разработка</p>
@@ -670,6 +729,65 @@ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
         x.beginPath();x.moveTo(ps[i].x*W,ps[i].y*H);x.lineTo(ps[j].x*W,ps[j].y*H);x.stroke();
       }
     }
+    requestAnimationFrame(draw);
+  })();
+})();
+
+/* ============ Hero slider ============ */
+(()=>{
+  const slides=[...$$('.hslide')],dots=[...$('#heroDots').children];
+  let idx=0,timer;
+  function go(i){
+    idx=i%slides.length;
+    slides.forEach((s,k)=>s.classList.toggle('on',k===idx));
+    dots.forEach((d,k)=>d.classList.toggle('on',k===idx));
+  }
+  function arm(){clearInterval(timer);timer=setInterval(()=>go(idx+1),9000);}
+  dots.forEach((d,k)=>d.addEventListener('click',()=>{go(k);arm();}));
+  arm();
+})();
+
+/* ============ Gold sand in hourglass (slide 3) ============ */
+(()=>{
+  const c=$('#sandCanvas'),x=c.getContext('2d');
+  const frame=c.parentElement;let W,H;
+  function size(){W=c.width=frame.clientWidth*DPR;H=c.height=frame.clientHeight*DPR;}
+  size();addEventListener('resize',size);
+  // hourglass geometry in fractions of the log4 image
+  const NECK_X=.512,NECK_Y=.45,FLOOR_Y=.78;
+  const grains=[];
+  function spawn(){
+    grains.push({
+      x:NECK_X+(Math.random()-.5)*.006,
+      y:NECK_Y,
+      vy:.00035+Math.random()*.00025,
+      vx:(Math.random()-.5)*.00012,
+      floor:FLOOR_Y-Math.random()*.05,
+      a:.5+Math.random()*.5,life:1
+    });
+  }
+  (function draw(){
+    if($('#hs3').classList.contains('on')){
+      x.clearRect(0,0,W,H);
+      if(!reduce)for(let i=0;i<3;i++)spawn();
+      // glow at the neck
+      const g=x.createRadialGradient(NECK_X*W,NECK_Y*H,0,NECK_X*W,NECK_Y*H,.03*H);
+      g.addColorStop(0,'rgba(246,226,122,.5)');g.addColorStop(1,'transparent');
+      x.fillStyle=g;x.fillRect((NECK_X-.05)*W,(NECK_Y-.05)*H,.1*W,.1*H);
+      for(let i=grains.length-1;i>=0;i--){
+        const p=grains[i];
+        if(p.y<p.floor){p.y+=p.vy;p.x+=p.vx;p.vy+=.000012;}
+        else{p.life-=.02;p.x+=(Math.random()-.5)*.001;}
+        if(p.life<=0){grains.splice(i,1);continue;}
+        const tw=.6+Math.sin((p.y*900)+i)*.4;
+        x.fillStyle=`rgba(246,226,122,${p.a*p.life*tw})`;
+        x.fillRect(p.x*W,p.y*H,1.4*DPR,1.4*DPR);
+        if(Math.random()<.02){
+          x.fillStyle=`rgba(255,251,224,${p.life})`;
+          x.fillRect(p.x*W,p.y*H,2.2*DPR,2.2*DPR);
+        }
+      }
+    } else if(grains.length){grains.length=0;x.clearRect(0,0,W,H);}
     requestAnimationFrame(draw);
   })();
 })();

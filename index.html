@@ -141,16 +141,10 @@ h2 em{font-style:normal;background:linear-gradient(120deg,var(--accent),var(--ac
 .clockPlane .pivot{position:absolute;left:-1.2cqw;top:-1.2cqw;width:2.4cqw;height:2.4cqw;border-radius:50%;
   background:#f6d27a;box-shadow:0 0 12px rgba(246,210,122,.9)}
 /* readable gold title over photo slides */
-.hero-inner:before{
-  content:"";position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);
-  width:130%;height:150%;pointer-events:none;z-index:-1;opacity:0;transition:opacity 1.2s;
-  background:radial-gradient(ellipse 55% 50% at center,rgba(3,3,4,.82),rgba(3,3,4,.55) 55%,transparent 75%);
-}
-#hero.photoMode .hero-inner:before{opacity:1}
 #hero.photoMode #heroTitle .w{
-  filter:drop-shadow(0 2px 4px rgba(0,0,0,1)) drop-shadow(0 4px 14px rgba(0,0,0,.95)) drop-shadow(0 0 34px rgba(0,0,0,.85));
+  filter:drop-shadow(0 2px 5px rgba(0,0,0,.95)) drop-shadow(0 0 22px rgba(0,0,0,.8));
 }
-#hero.photoMode .hero-sub{color:#e8e8ee;text-shadow:0 1px 4px #000,0 2px 12px rgba(0,0,0,.95)}
+#hero.photoMode .hero-sub{color:#d8d8de;text-shadow:0 1px 8px rgba(0,0,0,.9)}
 @keyframes handSec{from{transform:rotate(120deg)}to{transform:rotate(480deg)}}
 @keyframes handMin{from{transform:rotate(-65deg)}to{transform:rotate(295deg)}}
 /* sand canvas (slide 3) */

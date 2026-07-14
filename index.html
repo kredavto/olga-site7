@@ -261,31 +261,38 @@ h2 em{font-style:normal;background:none}
   animation:ppFade 16s ease infinite;
 }
 .process-photos .pp2{animation-delay:8s}
-/* golden shimmer sweeping across the staircases */
+/* golden glow climbing up the staircase steps */
 .process-photos:after{
-  content:"";position:absolute;inset:-30%;z-index:2;pointer-events:none;
-  background:linear-gradient(115deg,
-    transparent 30%,
-    rgba(246,210,122,.14) 42%,
-    rgba(255,240,190,.38) 50%,
-    rgba(246,210,122,.14) 58%,
-    transparent 70%);
+  content:"";position:absolute;inset:-25%;z-index:2;pointer-events:none;
+  /* narrow band parallel to the stair treads */
+  background:linear-gradient(160deg,
+    transparent 40%,
+    rgba(246,210,122,.10) 46%,
+    rgba(255,236,170,.42) 50%,
+    rgba(255,250,225,.55) 51.5%,
+    rgba(255,236,170,.42) 53%,
+    rgba(246,210,122,.10) 58%,
+    transparent 64%);
   mix-blend-mode:screen;
-  animation:goldSweep 5.5s ease-in-out infinite;
+  animation:stairClimb 6s cubic-bezier(.45,.05,.4,1) infinite;
 }
+/* soft trailing glow following the band */
 .process-photos:before{
-  content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
-  background:radial-gradient(70% 60% at 60% 45%,rgba(246,210,122,.16),transparent 70%);
+  content:"";position:absolute;inset:-25%;z-index:2;pointer-events:none;
+  background:linear-gradient(160deg,
+    transparent 32%,
+    rgba(246,210,122,.20) 50%,
+    transparent 68%);
+  filter:blur(14px);
   mix-blend-mode:screen;
-  animation:goldBreath 5.5s ease-in-out infinite;
+  animation:stairClimb 6s cubic-bezier(.45,.05,.4,1) infinite;
 }
-@keyframes goldSweep{
-  0%{transform:translateX(-55%) }
-  60%,100%{transform:translateX(55%)}
-}
-@keyframes goldBreath{
-  0%,100%{opacity:.35}
-  50%{opacity:1}
+/* the stairs run diagonally: travel from bottom-left up to top-right */
+@keyframes stairClimb{
+  0%{transform:translate(-22%,34%);opacity:0}
+  12%{opacity:1}
+  78%{opacity:1}
+  92%,100%{transform:translate(24%,-36%);opacity:0}
 }
 @keyframes ppFade{
   0%{opacity:0;transform:scale(1.04)}

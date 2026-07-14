@@ -117,26 +117,34 @@ h2 em{font-style:normal;background:linear-gradient(120deg,var(--accent),var(--ac
 .hslide{position:absolute;inset:0;opacity:0;transition:opacity 1.8s ease;pointer-events:none}
 .hslide.on{opacity:1}
 .hslide .cover{position:absolute;inset:0;overflow:hidden}
-.hslide .frame{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
-.hslide .frame img{width:100%;height:100%;display:block;object-fit:fill}
-.hslide .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,5,5,.45),rgba(5,5,5,.25) 45%,rgba(5,5,5,.6))}
-/* frame sizes emulate background-size:cover per image aspect */
-.frame-log3{width:max(100vw,53.4vh);height:max(100vh,187.1vw)}
-.frame-log4{width:max(100vw,75vh);height:max(100vh,133.3vw)}
+/* blurred backdrop fills the screen, sharp photo is shown fully (contain) */
+.hslide .blurbg{position:absolute;inset:-40px;background-size:cover;background-position:center;
+  filter:blur(34px) brightness(.35) saturate(.9)}
+.hslide .fit{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  container-type:size}
+.hslide .fit img{width:100%;height:100%;display:block}
+.hslide .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,5,5,.55),rgba(5,5,5,.3) 45%,rgba(5,5,5,.68))}
+.fit-log3{width:min(100vw,53.4vh);aspect-ratio:684/1280}
+.fit-log4{width:min(100vw,75vh);aspect-ratio:736/981}
 /* clock hands overlay (slide 2) */
 .clockPlane{position:absolute;left:49.7%;top:51%;width:0;height:0;
   transform:rotate(-14deg) scaleY(.32)}
 .hand{position:absolute;left:0;bottom:0;transform-origin:50% 100%;border-radius:99px}
-.hand.min{width:1.1vmin;height:36vmin;margin-left:-0.55vmin;
+.hand.min{width:2cqw;height:64cqw;margin-left:-1cqw;
   background:linear-gradient(180deg,#eaf6ff,rgba(234,246,255,.15));
   box-shadow:0 0 14px rgba(150,220,255,.5);opacity:.85;
   animation:handMin 240s linear infinite}
-.hand.sec{width:.45vmin;height:44vmin;margin-left:-0.225vmin;
+.hand.sec{width:.9cqw;height:80cqw;margin-left:-.45cqw;
   background:linear-gradient(180deg,#ffd94d,rgba(255,217,77,.1));
   box-shadow:0 0 10px rgba(255,217,77,.6);opacity:.9;
   animation:handSec 60s linear infinite}
-.clockPlane .pivot{position:absolute;left:-0.8vmin;top:-0.8vmin;width:1.6vmin;height:1.6vmin;border-radius:50%;
+.clockPlane .pivot{position:absolute;left:-1.5cqw;top:-1.5cqw;width:3cqw;height:3cqw;border-radius:50%;
   background:#ffd94d;box-shadow:0 0 12px rgba(255,217,77,.8)}
+/* readable gold title over photo slides */
+#hero.photoMode #heroTitle .w{
+  filter:drop-shadow(0 2px 5px rgba(0,0,0,.95)) drop-shadow(0 0 22px rgba(0,0,0,.8));
+}
+#hero.photoMode .hero-sub{color:#d8d8de;text-shadow:0 1px 8px rgba(0,0,0,.9)}
 @keyframes handSec{from{transform:rotate(120deg)}to{transform:rotate(480deg)}}
 @keyframes handMin{from{transform:rotate(-65deg)}to{transform:rotate(295deg)}}
 /* sand canvas (slide 3) */
@@ -323,21 +331,27 @@ footer{
     <canvas id="sphereCanvas"></canvas>
   </div>
   <div class="hslide" id="hs2">
-    <div class="cover"><div class="frame frame-log3">
-      <img src="log3.jpeg" alt="">
-      <div class="clockPlane">
-        <div class="hand min"></div>
-        <div class="hand sec"></div>
-        <div class="pivot"></div>
+    <div class="cover">
+      <div class="blurbg" style="background-image:url(log3.jpeg)"></div>
+      <div class="fit fit-log3">
+        <img src="log3.jpeg" alt="">
+        <div class="clockPlane">
+          <div class="hand min"></div>
+          <div class="hand sec"></div>
+          <div class="pivot"></div>
+        </div>
       </div>
-    </div></div>
+    </div>
     <div class="shade"></div>
   </div>
   <div class="hslide" id="hs3">
-    <div class="cover"><div class="frame frame-log4">
-      <img src="log4.jpeg" alt="">
-      <canvas class="sandCanvas" id="sandCanvas"></canvas>
-    </div></div>
+    <div class="cover">
+      <div class="blurbg" style="background-image:url(log4.jpeg)"></div>
+      <div class="fit fit-log4">
+        <img src="log4.jpeg" alt="">
+        <canvas class="sandCanvas" id="sandCanvas"></canvas>
+      </div>
+    </div>
     <div class="shade"></div>
   </div>
   <div class="hero-dots" id="heroDots">
@@ -741,6 +755,7 @@ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
     idx=i%slides.length;
     slides.forEach((s,k)=>s.classList.toggle('on',k===idx));
     dots.forEach((d,k)=>d.classList.toggle('on',k===idx));
+    $('#hero').classList.toggle('photoMode',idx>0);
   }
   function arm(){clearInterval(timer);timer=setInterval(()=>go(idx+1),9000);}
   dots.forEach((d,k)=>d.addEventListener('click',()=>{go(k);arm();}));

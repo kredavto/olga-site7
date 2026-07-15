@@ -670,7 +670,7 @@ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
     pts.push({th,ph,sp:.0004+Math.random()*.0006});
   }
   let tiltX=0,tiltY=0,tTiltX=0,tTiltY=0,rot=0;
-  function size(){W=c.width=innerWidth*DPR;H=c.height=innerHeight*DPR;R=Math.min(W,H)*.34;}
+  function size(){W=c.width=innerWidth*DPR;H=c.height=innerHeight*DPR;R=Math.min(W,H)*.46;}
   size();addEventListener('resize',size);
   addEventListener('pointermove',e=>{
     tTiltY=(e.clientX/innerWidth-.5)*.5;
@@ -695,14 +695,14 @@ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
     for(let i=0;i<pr.length;i+=13){
       const a=pr[i],b=pr[(i+31)%pr.length];
       if(a.z>0&&b.z>0){
-        x.strokeStyle=`rgba(56,229,255,${.05+a.z*.07})`;
+        x.strokeStyle=`rgba(56,229,255,${.10+a.z*.14})`;
         x.beginPath();x.moveTo(a.sx,a.sy);x.lineTo(b.sx,b.sy);x.stroke();
       }
     }
     for(const p of pr){
-      const al=.25+(p.z+1)*.35;
-      x.fillStyle=Math.random()<.02?`rgba(123,92,255,${al})`:`rgba(56,229,255,${al})`;
-      const r=(p.z>.6?1.9:1.2)*DPR*p.s;
+      const al=.4+(p.z+1)*.45;
+      x.fillStyle=Math.random()<.02?`rgba(123,92,255,${al})`:`rgba(90,236,255,${al})`;
+      const r=(p.z>.6?2.6:1.7)*DPR*p.s;
       x.fillRect(p.sx,p.sy,r,r);
     }
     requestAnimationFrame(draw);

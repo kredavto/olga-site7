@@ -137,8 +137,8 @@ h2 em{font-style:normal;background:none}
   container-type:size}
 .hslide .fit img{width:100%;height:100%;display:block}
 .hslide .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,5,5,.55),rgba(5,5,5,.3) 45%,rgba(5,5,5,.68))}
-.fit-log5{width:min(100vw,88vh);aspect-ratio:736/1041}
-.fit-log2{width:min(100vw,83vh);aspect-ratio:736/1104}
+.fit-log9{width:min(100vw,152vh);aspect-ratio:735/441}
+.fit-log10{width:min(100vw,140vh);aspect-ratio:736/490}
 /* clock hands overlay (slide 2) */
 .clockPlane{position:absolute;left:49.6%;top:56%;width:0;height:0;
   transform:rotate(-8deg) scaleY(.45)}
@@ -405,23 +405,18 @@ footer{
   </div>
   <div class="hslide" id="hs2">
     <div class="cover">
-      <div class="blurbg" style="background-image:url(log5.jpeg)"></div>
-      <div class="fit fit-log5">
-        <img src="log5.jpeg" alt="">
-        <div class="clockPlane">
-          <div class="hand min"></div>
-          <div class="hand sec"></div>
-          <div class="pivot"></div>
-        </div>
+      <div class="blurbg" style="background-image:url(log9.jpeg)"></div>
+      <div class="fit fit-log9">
+        <img src="log9.jpeg" alt="">
       </div>
     </div>
     <div class="shade"></div>
   </div>
   <div class="hslide" id="hs3">
     <div class="cover">
-      <div class="blurbg" style="background-image:url(log2.jpeg)"></div>
-      <div class="fit fit-log2">
-        <img src="log2.jpeg" alt="">
+      <div class="blurbg" style="background-image:url(log10.jpeg)"></div>
+      <div class="fit fit-log10">
+        <img src="log10.jpeg" alt="">
         <canvas class="sandCanvas" id="sandCanvas"></canvas>
       </div>
     </div>
@@ -485,7 +480,7 @@ footer{
     </div>
     <div class="process-photos reveal">
       <img src="log6.jpeg" alt="" class="pp pp1">
-      <img src="log7.jpeg" alt="" class="pp pp2">
+      <img src="log11.jpeg" alt="" class="pp pp2">
     </div>
     </div>
   </div>
@@ -846,7 +841,7 @@ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   function size(){W=c.width=frame.clientWidth*DPR;H=c.height=frame.clientHeight*DPR;}
   size();addEventListener('resize',size);
   // hourglass geometry in fractions of the log4 image
-  const NECK_X=.521,NECK_Y=.505,FLOOR_Y=.64;
+  const NECK_X=.513,NECK_Y=.63,FLOOR_Y=.84;
   const grains=[];
   function spawn(){
     grains.push({

@@ -722,12 +722,31 @@ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   const pulses=[];let t=0;
   (function draw(){
     x.clearRect(0,0,W,H);t++;
-    const cx=W/2,cy=H/2,base=Math.min(W,H*1.6);
+    const cx=W*.462,cy=H*.42,base=Math.min(W,H*1.6);
     // core
     const g=x.createRadialGradient(cx,cy,0,cx,cy,60*DPR);
     g.addColorStop(0,'rgba(56,229,255,.9)');g.addColorStop(.4,'rgba(123,92,255,.35)');g.addColorStop(1,'transparent');
     x.fillStyle=g;x.beginPath();x.arc(cx,cy,60*DPR,0,7);x.fill();
     x.fillStyle='#eaffff';x.beginPath();x.arc(cx,cy,(6+Math.sin(t*.05)*1.5)*DPR,0,7);x.fill();
+    // spinning light rings around the touch point
+    if(!reduce){
+      const a1=t*.03,a2=-t*.02;
+      x.lineWidth=1.6*DPR;
+      x.strokeStyle='rgba(120,240,255,.75)';
+      x.beginPath();x.arc(cx,cy,26*DPR,a1,a1+2.1);x.stroke();
+      x.beginPath();x.arc(cx,cy,26*DPR,a1+Math.PI,a1+Math.PI+2.1);x.stroke();
+      x.strokeStyle='rgba(255,255,255,.45)';
+      x.lineWidth=1*DPR;
+      x.beginPath();x.arc(cx,cy,38*DPR,a2,a2+1.4);x.stroke();
+      x.beginPath();x.arc(cx,cy,38*DPR,a2+Math.PI,a2+Math.PI+1.4);x.stroke();
+      // orbiting sparks
+      for(let k=0;k<3;k++){
+        const oa=t*.035+k*Math.PI*2/3;
+        const ox=cx+Math.cos(oa)*32*DPR,oy=cy+Math.sin(oa)*32*DPR;
+        x.fillStyle='rgba(210,250,255,.9)';
+        x.beginPath();x.arc(ox,oy,1.8*DPR,0,7);x.fill();
+      }
+    }
     // nodes + links
     nodes.forEach((n,i)=>{
       if(!reduce)n.a+=n.sp;

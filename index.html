@@ -70,6 +70,7 @@ nav{
 }
 @keyframes navIn{to{transform:translateY(0)}}
 .logo{font-size:18px;font-weight:800;letter-spacing:.06em}
+.logo-img img{height:64px;width:auto;display:block;filter:drop-shadow(0 0 12px rgba(255,150,50,.25))}
 .logo span{color:var(--accent)}
 .nav-links{display:flex;gap:32px;font-size:16px;font-weight:500;color:#eef0f4}
 .nav-links a{transition:color .3s;position:relative}
@@ -113,7 +114,7 @@ h2 em{font-style:normal;background:none}
 #services{padding-top:230px;padding-bottom:60px}
 #process{padding-top:40px;padding-bottom:40px}
 #process h2{margin-bottom:16px}
-#tech,#ai,#cases,#why{padding-top:60px;padding-bottom:60px}
+#ai,#cases,#why{padding-top:60px;padding-bottom:60px}
 
 /* reveal */
 .reveal{opacity:0;transform:translateY(46px) scale(.98);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
@@ -139,29 +140,11 @@ h2 em{font-style:normal;background:none}
 .hslide .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,5,5,.55),rgba(5,5,5,.3) 45%,rgba(5,5,5,.68))}
 .fit-log9{width:min(100vw,152vh);aspect-ratio:735/441}
 .fit-log13{width:min(100vw,159vh);aspect-ratio:626/393}
-/* cyan shimmer sweeping across the world map */
-.fit-log13:after{
-  content:"";position:absolute;inset:-25%;z-index:2;pointer-events:none;
-  background:linear-gradient(105deg,
-    transparent 38%,
-    rgba(56,229,255,.10) 45%,
-    rgba(120,240,255,.34) 50%,
-    rgba(210,250,255,.45) 51.5%,
-    rgba(120,240,255,.34) 53%,
-    rgba(56,229,255,.10) 58%,
-    transparent 65%);
-  mix-blend-mode:screen;
-  animation:mapSweep 6s ease-in-out infinite;
-}
 .fit-log13:before{
   content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
   background:radial-gradient(60% 55% at 50% 45%,rgba(56,229,255,.20),transparent 70%);
   mix-blend-mode:screen;
   animation:mapBreath 6s ease-in-out infinite;
-}
-@keyframes mapSweep{
-  0%{transform:translateX(-45%)}
-  70%,100%{transform:translateX(45%)}
 }
 @keyframes mapBreath{
   0%,100%{opacity:.3}
@@ -289,39 +272,6 @@ h2 em{font-style:normal;background:none}
   animation:ppFade 16s ease infinite;
 }
 .process-photos .pp2{animation-delay:8s}
-/* golden glow climbing up the staircase steps */
-.process-photos:after{
-  content:"";position:absolute;inset:-25%;z-index:2;pointer-events:none;
-  /* narrow band parallel to the stair treads */
-  background:linear-gradient(160deg,
-    transparent 40%,
-    rgba(246,210,122,.10) 46%,
-    rgba(255,236,170,.42) 50%,
-    rgba(255,250,225,.55) 51.5%,
-    rgba(255,236,170,.42) 53%,
-    rgba(246,210,122,.10) 58%,
-    transparent 64%);
-  mix-blend-mode:screen;
-  animation:stairClimb 6s cubic-bezier(.45,.05,.4,1) infinite;
-}
-/* soft trailing glow following the band */
-.process-photos:before{
-  content:"";position:absolute;inset:-25%;z-index:2;pointer-events:none;
-  background:linear-gradient(160deg,
-    transparent 32%,
-    rgba(246,210,122,.20) 50%,
-    transparent 68%);
-  filter:blur(14px);
-  mix-blend-mode:screen;
-  animation:stairClimb 6s cubic-bezier(.45,.05,.4,1) infinite;
-}
-/* the stairs run diagonally: travel from bottom-left up to top-right */
-@keyframes stairClimb{
-  0%{transform:translate(-22%,34%);opacity:0}
-  12%{opacity:1}
-  78%{opacity:1}
-  92%,100%{transform:translate(24%,-36%);opacity:0}
-}
 @keyframes ppFade{
   0%{opacity:0;transform:scale(1.04)}
   6%{opacity:1;transform:scale(1.01)}
@@ -414,11 +364,10 @@ footer{
 <div id="cursorDot"></div>
 
 <nav>
-  <div class="logo">ACR<span>·</span>DIGITAL</div>
+  <a href="#hero" class="logo-img"><img src="logotip.png" alt="Агентство цифровых решений"></a>
   <div class="nav-links">
     <a href="#services">Направления</a>
     <a href="#process">Процесс</a>
-    <a href="#tech">Технологии</a>
     <a href="#ai">AI</a>
     <a href="#cases">Кейсы</a>
     <a href="#contacts">Контакты</a>
@@ -513,29 +462,6 @@ footer{
   </div>
 </section>
 
-<!-- TECH -->
-<section id="tech">
-  <div class="kicker reveal">Наши технологии</div>
-  <h2 class="reveal">Стек <em>мирового уровня</em></h2>
-  <div class="tech-grid reveal">
-    <div class="tech"><b>🤖</b>AI</div>
-    <div class="tech"><b>◯</b>OpenAI</div>
-    <div class="tech"><b>✳️</b>Claude</div>
-    <div class="tech"><b>✦</b>Gemini</div>
-    <div class="tech"><b>🐦</b>Flutter</div>
-    <div class="tech"><b>⚛️</b>React</div>
-    <div class="tech"><b>▲</b>Next.js</div>
-    <div class="tech"><b>🔷</b>TypeScript</div>
-    <div class="tech"><b>🟢</b>Node.js</div>
-    <div class="tech"><b>🐍</b>Python</div>
-    <div class="tech"><b>🐳</b>Docker</div>
-    <div class="tech"><b>☁️</b>AWS</div>
-    <div class="tech"><b>✈️</b>Telegram API</div>
-    <div class="tech"><b>⚡</b>Supabase</div>
-    <div class="tech"><b>🔥</b>Firebase</div>
-    <div class="tech"><b>🐘</b>PostgreSQL</div>
-  </div>
-</section>
 
 <!-- AI SHOWCASE -->
 <section id="ai">

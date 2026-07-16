@@ -1,0 +1,365 @@
+@import "tailwindcss";
+
+/* ============================================================
+   «ФИНДРАЙВ» — Ultra Premium Dark Luxury design system
+   Palette: obsidian black / graphite / anthracite / smoke
+   Single accent: electric gold
+   ============================================================ */
+
+@theme {
+  --color-background: #060607;
+  --color-surface: #0c0c0e;
+  --color-surface-2: #111114;
+  --color-card: #101013;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-foreground: #f4f2ee;
+  --color-muted: #9b9a97;
+  --color-muted-2: #6f6e6b;
+  --color-gold: #e2b64f;
+  --color-gold-bright: #f0cd7a;
+  --color-gold-deep: #b8892b;
+
+  --font-heading: "Manrope Variable", "Manrope", "Inter Variable", Inter, system-ui, sans-serif;
+  --font-body: "Inter Variable", Inter, "Manrope Variable", system-ui, sans-serif;
+
+  --animate-shimmer: shimmer 6s linear infinite;
+  --animate-accordion-down: accordion-down 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+  --animate-accordion-up: accordion-up 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+  @keyframes accordion-down {
+    from { height: 0; opacity: 0; filter: blur(4px); }
+    to { height: var(--radix-accordion-content-height); opacity: 1; filter: blur(0); }
+  }
+  @keyframes accordion-up {
+    from { height: var(--radix-accordion-content-height); opacity: 1; }
+    to { height: 0; opacity: 0; filter: blur(4px); }
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(226, 182, 79, 0.28);
+  color: #fff;
+}
+
+/* ---- scrollbar ---- */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #0a0a0c; }
+::-webkit-scrollbar-thumb { background: #26262b; border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: #3a3a41; }
+
+.container {
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+@media (min-width: 1024px) {
+  .container { padding-inline: 3rem; }
+}
+
+/* ---- premium text treatments ---- */
+.text-gold {
+  color: var(--color-gold);
+}
+.gold-shimmer {
+  background: linear-gradient(
+    110deg,
+    #f4f2ee 0%,
+    #f4f2ee 38%,
+    var(--color-gold-bright) 50%,
+    #f4f2ee 62%,
+    #f4f2ee 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 7s linear infinite;
+}
+.gold-text-gradient {
+  background: linear-gradient(120deg, var(--color-gold-bright), var(--color-gold) 45%, var(--color-gold-deep));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.display {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+}
+
+.eyebrow {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+/* ---- glass ---- */
+.glass {
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.015));
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+}
+.glass-strong {
+  background: linear-gradient(165deg, rgba(24, 24, 28, 0.82), rgba(10, 10, 12, 0.9));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+}
+
+/* glass reflection sweep on hover */
+.reflect {
+  position: relative;
+  overflow: hidden;
+}
+.reflect::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.08) 50%, transparent 60%);
+  transform: translateX(-120%);
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+.reflect:hover::after {
+  transform: translateX(120%);
+}
+
+/* ---- luxury card ---- */
+.lux-card {
+  position: relative;
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  transition: border-color 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease;
+}
+.lux-card:hover {
+  border-color: rgba(226, 182, 79, 0.35);
+  box-shadow:
+    0 24px 60px -24px rgba(0, 0, 0, 0.8),
+    0 0 40px -18px rgba(226, 182, 79, 0.25);
+}
+
+/* dynamic light spot follows cursor (set --mx / --my via JS) */
+.spotlight {
+  position: relative;
+}
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    420px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(226, 182, 79, 0.08),
+    transparent 65%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.spotlight:hover::before {
+  opacity: 1;
+}
+
+/* ---- gold glow button ---- */
+.btn-gold {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #0b0a07;
+  background: linear-gradient(135deg, var(--color-gold-bright), var(--color-gold) 55%, var(--color-gold-deep));
+  border-radius: 9999px;
+  transition: box-shadow 0.45s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), filter 0.3s ease;
+  box-shadow:
+    0 0 0 1px rgba(240, 205, 122, 0.4) inset,
+    0 8px 30px -10px rgba(226, 182, 79, 0.55);
+  overflow: hidden;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn-gold:hover {
+  box-shadow:
+    0 0 0 1px rgba(240, 205, 122, 0.6) inset,
+    0 10px 45px -8px rgba(226, 182, 79, 0.8);
+  filter: brightness(1.06);
+}
+.btn-gold:active { transform: scale(0.985); }
+.btn-gold:disabled { opacity: 0.55; pointer-events: none; }
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--color-foreground);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(10px);
+  transition: border-color 0.4s ease, background 0.4s ease, color 0.4s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn-ghost:hover {
+  border-color: rgba(226, 182, 79, 0.5);
+  background: rgba(226, 182, 79, 0.07);
+  color: var(--color-gold-bright);
+}
+.btn-ghost:disabled { opacity: 0.55; pointer-events: none; }
+
+/* soft breathing glow */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 0 1px rgba(240,205,122,.4) inset, 0 8px 30px -10px rgba(226,182,79,.5); }
+  50% { box-shadow: 0 0 0 1px rgba(240,205,122,.55) inset, 0 10px 48px -8px rgba(226,182,79,.85); }
+}
+.glow-pulse { animation: glow-pulse 3.2s ease-in-out infinite; }
+
+/* ---- inputs ---- */
+.lux-input {
+  width: 100%;
+  height: 3.25rem;
+  border-radius: 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  padding-inline: 1.1rem;
+  font-size: 1rem;
+  color: var(--color-foreground);
+  outline: none;
+  transition: border-color 0.35s ease, box-shadow 0.35s ease, background 0.35s ease;
+  backdrop-filter: blur(8px);
+}
+.lux-input::placeholder { color: var(--color-muted-2); }
+.lux-input:focus {
+  border-color: rgba(226, 182, 79, 0.55);
+  background: rgba(255, 255, 255, 0.045);
+  box-shadow: 0 0 0 4px rgba(226, 182, 79, 0.1), 0 0 24px -6px rgba(226, 182, 79, 0.3);
+}
+
+.lux-label {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-bottom: 0.5rem;
+}
+
+/* ---- hairlines / decor ---- */
+.hairline {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(226, 182, 79, 0.35), transparent);
+}
+.grid-lines {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+
+/* ---- 3D tilt scene ---- */
+.scene-3d { perspective: 1400px; }
+.tilt-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+/* ---- marquee ---- */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 42s linear infinite;
+}
+.marquee-track:hover { animation-play-state: paused; }
+
+/* ---- ambient drift for background orbs ---- */
+@keyframes drift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33% { transform: translate3d(4%, -5%, 0) scale(1.06); }
+  66% { transform: translate3d(-4%, 4%, 0) scale(0.97); }
+}
+.orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+  pointer-events: none;
+  animation: drift 18s ease-in-out infinite;
+}
+
+/* headlight sweep line for hero */
+@keyframes light-sweep {
+  0% { transform: translateX(-30%) skewX(-18deg); opacity: 0; }
+  12% { opacity: 0.8; }
+  50% { opacity: 0.35; }
+  100% { transform: translateX(130%) skewX(-18deg); opacity: 0; }
+}
+.light-sweep {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 22%;
+  background: linear-gradient(90deg, transparent, rgba(240, 205, 122, 0.06), transparent);
+  animation: light-sweep 9s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* ---- page loader ---- */
+@keyframes loader-bar {
+  0% { width: 0%; }
+  60% { width: 72%; }
+  100% { width: 100%; }
+}
+
+/* reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -882,12 +882,12 @@ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
       // faint background stars
       for(const s of stars){
         const tw=.5+Math.sin(t*s.sp+s.ph)*.5;
-        x.fillStyle=`rgba(140,200,255,${.12+tw*.2})`;
+        x.fillStyle=`rgba(150,210,255,${.18+tw*.3})`;
         x.fillRect(s.x*W,s.y*H,1.2*DPR,1.2*DPR);
       }
       if(pts){
         // map area centered, keeping image aspect, with parallax shift
-        const mw=Math.min(W*.86,H*1.35),mh=mw*393/626;
+        const mw=Math.min(W*1.04,H*1.75),mh=mw*393/626;
         const off=(reduce?0:1);
         const bx=(W-mw)/2-tiltX*40*DPR*off,by=(H-mh)/2-tiltY*28*DPR*off;
         for(const p of pts){
@@ -895,13 +895,13 @@ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
           const px=bx+p.mx*mw,py=by+p.my*mh;
           if(p.big){
             const g=x.createRadialGradient(px,py,0,px,py,7*DPR);
-            g.addColorStop(0,`rgba(160,240,255,${.5+tw*.5})`);
+            g.addColorStop(0,`rgba(190,248,255,${.65+tw*.35})`);
             g.addColorStop(1,'transparent');
             x.fillStyle=g;
             x.fillRect(px-7*DPR,py-7*DPR,14*DPR,14*DPR);
           }else{
-            x.fillStyle=`rgba(90,225,255,${.15+tw*.6})`;
-            x.fillRect(px,py,1.5*DPR,1.5*DPR);
+            x.fillStyle=`rgba(110,235,255,${.3+tw*.7})`;
+            x.fillRect(px,py,2.1*DPR,2.1*DPR);
           }
         }
       }

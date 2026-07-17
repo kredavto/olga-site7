@@ -44,7 +44,7 @@ export function Header() {
       className="fixed top-0 inset-x-0 z-50 px-3 pt-3 lg:px-6 lg:pt-4"
     >
       <div
-        className={`mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 rounded-2xl px-4 lg:px-6 transition-all duration-500 ${
+        className={`mx-auto flex h-20 md:h-28 max-w-7xl items-center justify-between gap-4 rounded-2xl px-4 lg:px-6 transition-all duration-500 ${
           scrolled ? "glass-strong shadow-[0_18px_50px_-20px_rgba(0,0,0,0.8)]" : "bg-transparent border border-transparent"
         }`}
       >

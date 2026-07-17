@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-const imgSizes = { sm: "h-12", md: "h-16", lg: "h-24" };
+const imgSizes = { sm: "h-24", md: "h-24", lg: "h-32" };
 
 export function Logo({
   className = "",

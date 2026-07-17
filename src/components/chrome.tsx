@@ -51,12 +51,14 @@ export function PageLoader() {
             initial={{ opacity: 0, scale: 0.9, filter: "blur(6px)" }}
             animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-col items-center gap-6"
+            className="flex flex-col items-center"
           >
-            <FindriveMark className="h-16 w-16" />
-            <p className="display text-2xl tracking-[0.28em] gold-text-gradient uppercase">
-              «ФИНДРАЙВ»
-            </p>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/logo1.png"
+              alt="«ФИНДРАЙВ» — займы под залог автомобилей"
+              className="w-72 sm:w-80 lg:w-96 h-auto drop-shadow-[0_0_40px_rgba(226,182,79,0.45)]"
+            />
           </motion.div>
           <div className="mt-10 h-px w-56 overflow-hidden bg-white/10 rounded-full">
             <div

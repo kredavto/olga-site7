@@ -63,57 +63,42 @@ function RegisterForm() {
         }
       }
 
-      if (files.length > 0) {
-        // вложения доставляются только при нативной multipart-отправке формы:
-        // AJAX-эндпоинт FormSubmit отбрасывает файлы
-        const nf = document.createElement("form");
-        nf.method = "POST";
-        nf.action = `https://formsubmit.co/${LEAD_EMAIL}`;
-        nf.enctype = "multipart/form-data";
-        nf.style.display = "none";
-        const hidden = (name: string, value: string) => {
-          const input = document.createElement("input");
-          input.type = "hidden";
-          input.name = name;
-          input.value = value;
-          nf.appendChild(input);
-        };
-        hidden("_subject", "Новая заявка с сайта «ФИНДРАЙВ»");
-        hidden("_template", "table");
-        hidden("_captcha", "false");
-        hidden("_next", `${window.location.origin}/register?sent=1`);
-        hidden("Имя", form.name);
-        hidden("Телефон", form.phone);
-        hidden("Сумма", form.amount || "—");
-        hidden("Email", form.email || "—");
-        if (uploadedUrls.length) hidden("Резервные ссылки", uploadedUrls.join("\n"));
-        const fileInput = document.createElement("input");
-        fileInput.type = "file";
-        fileInput.name = "attachment";
-        fileInput.multiple = true;
-        const dt = new DataTransfer();
-        files.forEach((f) => dt.items.add(f));
-        fileInput.files = dt.files;
-        nf.appendChild(fileInput);
-        document.body.appendChild(nf);
-        nf.submit();
-        return; // страница уйдёт на FormSubmit и вернётся на /register?sent=1
+      // основной путь: свой API — письмо с настоящими вложениями через SMTP
+      let sent = false;
+      try {
+        const apiRes = await fetch("/api/lead", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: form.name,
+            phone: form.phone,
+            amount: form.amount,
+            email: form.email,
+            fileUrls: uploadedUrls,
+          }),
+        });
+        sent = apiRes.ok;
+      } catch {
+        sent = false;
       }
 
-      const res = await fetch(`https://formsubmit.co/ajax/${LEAD_EMAIL}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
-          _subject: "Новая заявка с сайта «ФИНДРАЙВ»",
-          _template: "table",
-          Имя: form.name,
-          Телефон: form.phone,
-          Сумма: form.amount || "—",
-          Email: form.email || "—",
-          "Фото документов": "не приложены",
-        }),
-      });
-      if (!res.ok) throw new Error("Не удалось отправить заявку");
+      // резервный путь: FormSubmit со ссылками на файлы
+      if (!sent) {
+        const res = await fetch(`https://formsubmit.co/ajax/${LEAD_EMAIL}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({
+            _subject: "Новая заявка с сайта «ФИНДРАЙВ»",
+            _template: "table",
+            Имя: form.name,
+            Телефон: form.phone,
+            Сумма: form.amount || "—",
+            Email: form.email || "—",
+            "Фото документов": uploadedUrls.length ? uploadedUrls.join("\n") : "не приложены",
+          }),
+        });
+        if (!res.ok) throw new Error("Не удалось отправить заявку");
+      }
 
       toast.success("Заявка отправлена!", {
         description: "Мы свяжемся с вами в ближайшее время",

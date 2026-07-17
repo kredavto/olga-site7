@@ -66,18 +66,18 @@ export default function BorrowerDashboardPage() {
                     <div className="mb-4 flex items-start justify-between">
                       <div>
                         <p className="display">{tranche.id}</p>
-                        <p className="text-sm text-[#9b9a97]">
+                        <p className="text-base text-[#c6c5c1]">
                           {tranche.amount} • {tranche.rate}
                         </p>
                       </div>
                       <StatusBadge status="Активный" />
                     </div>
                     <div className="mb-1.5 flex justify-between text-xs">
-                      <span className="text-[#9b9a97]">Погашено</span>
+                      <span className="text-[#c6c5c1]">Погашено</span>
                       <span>{tranche.paid}%</span>
                     </div>
                     <Progress value={tranche.paid} className="h-2" />
-                    <p className="mt-2.5 text-xs text-[#6f6e6b]">Срок до: {tranche.due}</p>
+                    <p className="mt-2.5 text-sm text-[#a5a4a0]">Срок до: {tranche.due}</p>
                   </div>
                 ))}
               </div>
@@ -95,11 +95,11 @@ export default function BorrowerDashboardPage() {
                       {payment.status === "paid" ? (
                         <CheckCircle2 size={16} className="text-[#e2b64f]" />
                       ) : (
-                        <Calendar size={16} className="text-[#9b9a97]" />
+                        <Calendar size={16} className="text-[#c6c5c1]" />
                       )}
                       <div>
                         <p className="text-sm font-medium">{payment.date}</p>
-                        <p className="text-xs text-[#6f6e6b]">
+                        <p className="text-sm text-[#a5a4a0]">
                           {payment.status === "paid" ? "Оплачено" : "Предстоящий"}
                         </p>
                       </div>
@@ -114,7 +114,7 @@ export default function BorrowerDashboardPage() {
               <div className="flex flex-col items-center justify-between gap-5 sm:flex-row">
                 <div>
                   <h3 className="display text-lg mb-1">Запросить новый транш</h3>
-                  <p className="text-sm text-[#9b9a97]">
+                  <p className="text-base text-[#c6c5c1]">
                     Доступно: 10 750 000 ₽ в рамках одобренного лимита
                   </p>
                 </div>
@@ -131,11 +131,11 @@ export default function BorrowerDashboardPage() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-white/10">
-                    <th className="py-3 text-left font-medium text-[#9b9a97]">ID</th>
-                    <th className="py-3 text-right font-medium text-[#9b9a97]">Сумма</th>
-                    <th className="py-3 text-right font-medium text-[#9b9a97]">Ставка</th>
-                    <th className="py-3 text-right font-medium text-[#9b9a97]">Дата</th>
-                    <th className="py-3 text-right font-medium text-[#9b9a97]">Статус</th>
+                    <th className="py-3 text-left font-medium text-[#c6c5c1]">ID</th>
+                    <th className="py-3 text-right font-medium text-[#c6c5c1]">Сумма</th>
+                    <th className="py-3 text-right font-medium text-[#c6c5c1]">Ставка</th>
+                    <th className="py-3 text-right font-medium text-[#c6c5c1]">Дата</th>
+                    <th className="py-3 text-right font-medium text-[#c6c5c1]">Статус</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -166,10 +166,10 @@ export default function BorrowerDashboardPage() {
                   className="flex items-center justify-between rounded-xl border border-white/10 p-4 transition-colors hover:border-[#e2b64f]/30"
                 >
                   <div className="flex items-center gap-3">
-                    <FileText size={18} className="text-[#9b9a97]" />
+                    <FileText size={18} className="text-[#c6c5c1]" />
                     <div>
                       <p className="text-sm font-medium">{doc.name}</p>
-                      <p className="text-xs text-[#6f6e6b]">
+                      <p className="text-sm text-[#a5a4a0]">
                         {doc.date} • {doc.type}
                       </p>
                     </div>

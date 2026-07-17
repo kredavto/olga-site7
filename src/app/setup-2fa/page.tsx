@@ -92,7 +92,7 @@ function Setup2FA() {
             <ShieldCheck className="text-[#e2b64f]" size={32} />
           </div>
           <h1 className="display text-3xl mb-2">Двухфакторная авторизация</h1>
-          <p className="text-[#9b9a97]">
+          <p className="text-[#c6c5c1]">
             Защитите свой аккаунт с помощью кода подтверждения на email
           </p>
         </div>
@@ -104,7 +104,7 @@ function Setup2FA() {
                 <Mail className="mt-0.5 text-[#e2b64f]" size={20} />
                 <div>
                   <p className="font-semibold text-sm mb-1">Email-код</p>
-                  <p className="text-sm leading-relaxed text-[#9b9a97]">
+                  <p className="text-base leading-relaxed text-[#c6c5c1]">
                     При каждом входе вам будет отправлен 6-значный код на вашу электронную
                     почту для подтверждения
                   </p>
@@ -124,7 +124,7 @@ function Setup2FA() {
                 </button>
               </Magnetic>
               <button
-                className="btn-ghost h-12 w-full text-sm text-[#9b9a97]"
+                className="btn-ghost h-12 w-full text-base text-[#c6c5c1]"
                 onClick={goToDashboard}
               >
                 <ArrowRight size={16} />
@@ -136,7 +136,7 @@ function Setup2FA() {
 
         {step === "verify" && (
           <div className="space-y-5">
-            <p className="text-center text-sm leading-relaxed text-[#9b9a97]">
+            <p className="text-center text-base leading-relaxed text-[#c6c5c1]">
               Мы отправили код подтверждения на вашу электронную почту. Введите его ниже.
             </p>
             <div>

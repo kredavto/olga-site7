@@ -13,8 +13,8 @@
   --color-card: #101013;
   --color-border: rgba(255, 255, 255, 0.08);
   --color-foreground: #f4f2ee;
-  --color-muted: #9b9a97;
-  --color-muted-2: #6f6e6b;
+  --color-muted: #c6c5c1;
+  --color-muted-2: #a5a4a0;
   --color-gold: #e2b64f;
   --color-gold-bright: #f0cd7a;
   --color-gold-deep: #b8892b;
@@ -116,7 +116,7 @@ body {
 
 .eyebrow {
   font-family: var(--font-heading);
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   font-weight: 600;
   letter-spacing: 0.34em;
   text-transform: uppercase;
@@ -277,7 +277,7 @@ body {
 .lux-label {
   display: block;
   font-family: var(--font-heading);
-  font-size: 0.78rem;
+  font-size: 0.85rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;

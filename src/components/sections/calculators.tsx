@@ -145,7 +145,7 @@ export function InvestorCalculator() {
             step={100_000}
             aria-label="Предлагаемая сумма инвестиций"
           />
-          <div className="mt-2 flex justify-between text-sm text-[#6f6e6b]">
+          <div className="mt-2 flex justify-between text-sm text-[#a5a4a0]">
             <span>1 млн ₽</span>
             <span>10 млн ₽</span>
           </div>
@@ -166,7 +166,7 @@ export function InvestorCalculator() {
             step={1}
             aria-label="Срок инвестиций"
           />
-          <div className="mt-2 flex justify-between text-sm text-[#6f6e6b]">
+          <div className="mt-2 flex justify-between text-sm text-[#a5a4a0]">
             <span>1 год</span>
             <span>3 года</span>
           </div>

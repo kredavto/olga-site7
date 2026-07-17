@@ -70,7 +70,7 @@ export default function InvestorDashboardPage() {
                   >
                     <div>
                       <p className="text-sm font-medium">{inv.company}</p>
-                      <p className="text-xs text-[#6f6e6b]">
+                      <p className="text-sm text-[#a5a4a0]">
                         {inv.term} • {inv.rate}%
                       </p>
                     </div>
@@ -89,10 +89,10 @@ export default function InvestorDashboardPage() {
                     className="flex items-center justify-between rounded-xl bg-white/[0.03] p-4 transition-colors hover:bg-white/[0.05]"
                   >
                     <div className="flex items-center gap-3">
-                      <Calendar size={16} className="text-[#9b9a97]" />
+                      <Calendar size={16} className="text-[#c6c5c1]" />
                       <div>
                         <p className="text-sm font-medium">{payout.company}</p>
-                        <p className="text-xs text-[#6f6e6b]">{payout.date}</p>
+                        <p className="text-sm text-[#a5a4a0]">{payout.date}</p>
                       </div>
                     </div>
                     <p className="display text-gold">{payout.amount}</p>
@@ -110,11 +110,11 @@ export default function InvestorDashboardPage() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-white/10">
-                    <th className="py-3 text-left font-medium text-[#9b9a97]">Компания</th>
-                    <th className="py-3 text-right font-medium text-[#9b9a97]">Сумма</th>
-                    <th className="py-3 text-right font-medium text-[#9b9a97]">Ставка</th>
-                    <th className="py-3 text-right font-medium text-[#9b9a97]">Срок</th>
-                    <th className="py-3 text-right font-medium text-[#9b9a97]">Статус</th>
+                    <th className="py-3 text-left font-medium text-[#c6c5c1]">Компания</th>
+                    <th className="py-3 text-right font-medium text-[#c6c5c1]">Сумма</th>
+                    <th className="py-3 text-right font-medium text-[#c6c5c1]">Ставка</th>
+                    <th className="py-3 text-right font-medium text-[#c6c5c1]">Срок</th>
+                    <th className="py-3 text-right font-medium text-[#c6c5c1]">Статус</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -143,25 +143,25 @@ export default function InvestorDashboardPage() {
               <div key={i} className="lux-card reflect rounded-2xl p-6">
                 <div className="mb-4 flex items-start justify-between">
                   <p className="display">{loan.company}</p>
-                  <Building2 size={16} className="text-[#9b9a97]" />
+                  <Building2 size={16} className="text-[#c6c5c1]" />
                 </div>
                 <div className="mb-5 space-y-2.5 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-[#9b9a97]">Сумма</span>
+                    <span className="text-[#c6c5c1]">Сумма</span>
                     <span className="font-medium">{loan.amount}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-[#9b9a97]">Ставка</span>
+                    <span className="text-[#c6c5c1]">Ставка</span>
                     <span className="font-medium text-[#e2b64f]">{loan.rate}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-[#9b9a97]">Срок</span>
+                    <span className="text-[#c6c5c1]">Срок</span>
                     <span className="font-medium">{loan.term}</span>
                   </div>
                 </div>
                 <div className="mb-4">
                   <div className="mb-1.5 flex justify-between text-xs">
-                    <span className="text-[#9b9a97]">Собрано</span>
+                    <span className="text-[#c6c5c1]">Собрано</span>
                     <span>{loan.filled}%</span>
                   </div>
                   <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">

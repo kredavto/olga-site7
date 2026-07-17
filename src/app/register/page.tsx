@@ -91,7 +91,7 @@ function RegisterForm() {
         <div className="mb-8 text-center">
           <Logo size="md" className="justify-center mb-6" />
           <h1 className="display text-3xl mb-2">Подать заявку</h1>
-          <p className="text-[#9b9a97]">Оставьте контакты — перезвоним и всё расскажем</p>
+          <p className="text-[#c6c5c1]">Оставьте контакты — перезвоним и всё расскажем</p>
         </div>
 
         <div className="space-y-5">
@@ -154,7 +154,7 @@ function RegisterForm() {
               Загрузить фото документов
             </button>
             {files.length > 0 && (
-              <p className="mt-2 text-sm text-[#9b9a97]">
+              <p className="mt-2 text-base text-[#c6c5c1]">
                 Выбрано файлов: {files.length} — {files.map((f) => f.name).join(", ")}
               </p>
             )}

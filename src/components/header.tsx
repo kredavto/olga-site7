@@ -55,7 +55,7 @@ export function Header() {
             <button
               key={item.id}
               onClick={() => scrollTo(item.id)}
-              className="group relative py-2 font-medium text-[0.95rem] text-[#9b9a97] transition-colors duration-300 hover:text-[#f0cd7a]"
+              className="group relative py-2 font-medium text-[1.05rem] text-[#c6c5c1] transition-colors duration-300 hover:text-[#f0cd7a]"
             >
               {item.label}
               <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-[#e2b64f] to-transparent transition-all duration-500 group-hover:w-full" />
@@ -65,7 +65,7 @@ export function Header() {
             href="https://wa.me/79219888880"
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative py-2 font-medium text-[0.95rem] text-[#9b9a97] transition-colors duration-300 hover:text-[#f0cd7a]"
+            className="group relative py-2 font-medium text-[1.05rem] text-[#c6c5c1] transition-colors duration-300 hover:text-[#f0cd7a]"
           >
             Чат
             <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-[#e2b64f] to-transparent transition-all duration-500 group-hover:w-full" />
@@ -105,7 +105,7 @@ export function Header() {
               <button
                 key={item.id}
                 onClick={() => scrollTo(item.id)}
-                className="block w-full rounded-xl px-3 py-3 text-left text-sm font-medium text-[#c9c8c4] transition-colors hover:bg-white/5 hover:text-[#f0cd7a]"
+                className="block w-full rounded-xl px-3 py-3 text-left text-sm font-medium text-[#d6d5d1] transition-colors hover:bg-white/5 hover:text-[#f0cd7a]"
               >
                 {item.label}
               </button>
@@ -114,7 +114,7 @@ export function Header() {
               href="https://wa.me/79219888880"
               target="_blank"
               rel="noopener noreferrer"
-              className="block w-full rounded-xl px-3 py-3 text-left text-sm font-medium text-[#c9c8c4] transition-colors hover:bg-white/5 hover:text-[#f0cd7a]"
+              className="block w-full rounded-xl px-3 py-3 text-left text-sm font-medium text-[#d6d5d1] transition-colors hover:bg-white/5 hover:text-[#f0cd7a]"
             >
               Чат
             </a>

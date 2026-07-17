@@ -50,7 +50,7 @@ export default function LoginPage() {
         <div className="mb-8 text-center">
           <Logo size="md" className="justify-center mb-6" />
           <h1 className="display text-3xl mb-2">Вход в личный кабинет</h1>
-          <p className="text-[#9b9a97]">Введите email и пароль</p>
+          <p className="text-[#c6c5c1]">Введите email и пароль</p>
         </div>
 
         <div className="space-y-5">
@@ -85,7 +85,7 @@ export default function LoginPage() {
             </button>
           </Magnetic>
 
-          <p className="text-center text-sm text-[#9b9a97]">
+          <p className="text-center text-base text-[#c6c5c1]">
             Нет аккаунта?{" "}
             <Link
               href="/register"

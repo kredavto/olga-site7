@@ -81,7 +81,7 @@ export function Hero() {
           </h1>
 
           <Reveal delay={1.9} y={20}>
-            <p className="mb-10 max-w-lg text-lg leading-relaxed text-[#9b9a97]">
+            <p className="mb-10 max-w-lg text-lg leading-relaxed text-[#c6c5c1]">
               Получите деньги под залог автомобиля со ставкой от 6% в месяц. Авто остаётся у
               вас, ПТС не забираем. Предварительное решение за 10 минут онлайн.
             </p>
@@ -108,7 +108,7 @@ export function Hero() {
           <Reveal delay={2.2} y={16}>
             <button
               onClick={() => router.push("/projects")}
-              className="group flex items-center gap-3 text-[0.95rem] text-[#9b9a97] transition-colors duration-300 hover:text-[#f0cd7a]"
+              className="group flex items-center gap-3 text-[1.05rem] text-[#c6c5c1] transition-colors duration-300 hover:text-[#f0cd7a]"
             >
               <span className="flex h-8 w-8 items-center justify-center rounded-full border border-[#e2b64f]/40 bg-[#e2b64f]/10 font-bold text-[#e2b64f] transition-all duration-300 group-hover:shadow-[0_0_18px_rgba(226,182,79,0.4)]">
                 ₽
@@ -220,9 +220,9 @@ export function Features() {
                     size={30}
                     className="mb-6 text-[#e2b64f] drop-shadow-[0_0_10px_rgba(226,182,79,0.6)] transition-transform duration-500 group-hover:scale-110"
                   />
-                  <p className="mb-1 text-[0.95rem] text-[#9b9a97]">{f.title}</p>
+                  <p className="mb-1 text-[1.05rem] text-[#c6c5c1]">{f.title}</p>
                   <p className="display mb-3 text-2xl lg:text-[1.7rem] text-gold">{f.value}</p>
-                  <p className="text-[0.95rem] leading-relaxed text-[#9b9a97]">{f.desc}</p>
+                  <p className="text-[1.05rem] leading-relaxed text-[#c6c5c1]">{f.desc}</p>
                 </button>
               </TiltCard>
             </Reveal>
@@ -268,7 +268,7 @@ export function Stats() {
                   <CountUp value={s.value} />
                 </p>
                 <div className="mx-auto mb-3 h-px w-10 bg-[#e2b64f]/30 transition-all duration-500 group-hover:w-20 group-hover:bg-[#e2b64f]/60" />
-                <p className="text-[0.95rem] text-[#9b9a97]">{s.label}</p>
+                <p className="text-[1.05rem] text-[#c6c5c1]">{s.label}</p>
               </button>
             </Reveal>
           ))}
@@ -294,7 +294,7 @@ export function InvestSection() {
         </Reveal>
 
         <Reveal delay={0.1}>
-          <p className="mx-auto mb-14 max-w-2xl text-center text-lg lg:text-xl leading-relaxed text-[#9b9a97]">
+          <p className="mx-auto mb-14 max-w-2xl text-center text-lg lg:text-xl leading-relaxed text-[#c6c5c1]">
             Привлекаем инвестиции под{" "}
             <span className="display text-gold">24% годовых</span> с ежемесячной выплатой
             процентов.
@@ -344,7 +344,7 @@ export function Requirements() {
                 className="lux-card reflect group flex w-full items-center justify-between gap-6 rounded-2xl p-6 lg:p-7 text-left cursor-pointer"
               >
                 <div>
-                  <p className="mb-1.5 text-[0.85rem] uppercase tracking-[0.12em] text-[#6f6e6b]">
+                  <p className="mb-1.5 text-[1.05rem] uppercase tracking-[0.12em] text-[#a5a4a0]">
                     {r.label}
                   </p>
                   <p className="display text-lg lg:text-xl text-[#f4f2ee] transition-colors duration-300 group-hover:text-[#f0cd7a]">
@@ -385,7 +385,7 @@ export function Partners() {
                 <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-[#e2b64f]/30 bg-[#e2b64f]/10 text-[#e2b64f] shadow-[0_0_24px_rgba(226,182,79,0.2)]">
                   <Handshake size={26} />
                 </span>
-                <p className="text-lg lg:text-xl leading-relaxed text-[#c9c8c4]">
+                <p className="text-lg lg:text-xl leading-relaxed text-[#d6d5d1]">
                   Стань участником нашей партнёрской программы и зарабатывай вместе с нами на
                   постоянной основе!
                 </p>
@@ -396,9 +396,9 @@ export function Partners() {
               <div className="mb-10 flex items-start gap-4">
                 <BadgePercent size={24} className="mt-1 shrink-0 text-[#e2b64f]" />
                 <p className="text-lg lg:text-xl leading-relaxed">
-                  <span className="text-[#9b9a97]">Наши условия — </span>
+                  <span className="text-[#c6c5c1]">Наши условия — </span>
                   <span className="display text-gold">платим 5%</span>
-                  <span className="text-[#9b9a97]">
+                  <span className="text-[#c6c5c1]">
                     {" "}
                     от сделки за каждого привлечённого вами инвестора или заёмщика. Работаем
                     официально в рамках Агентского договора.
@@ -464,7 +464,7 @@ export function Faq() {
                 <AccordionTrigger className="display text-lg lg:text-xl">
                   {item.q}
                 </AccordionTrigger>
-                <AccordionContent className="text-base lg:text-lg leading-relaxed text-[#9b9a97]">
+                <AccordionContent className="text-base lg:text-lg leading-relaxed text-[#c6c5c1]">
                   {item.a}
                 </AccordionContent>
               </AccordionItem>

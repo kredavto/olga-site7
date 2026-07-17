@@ -53,7 +53,7 @@ export function StatCard({
           <Icon size={20} className="text-[#e2b64f]" />
         </div>
         <div>
-          <p className="text-sm text-[#9b9a97]">{label}</p>
+          <p className="text-base text-[#c6c5c1]">{label}</p>
           <p className="display text-xl">{value}</p>
         </div>
       </div>
@@ -76,7 +76,7 @@ export function TabButton({
       className={`h-10 whitespace-nowrap rounded-full px-5 text-sm font-semibold transition-all duration-300 ${
         active
           ? "bg-gradient-to-r from-[#f0cd7a] to-[#b8892b] text-[#0b0a07] shadow-[0_6px_24px_-8px_rgba(226,182,79,0.6)]"
-          : "border border-white/10 text-[#9b9a97] hover:border-[#e2b64f]/40 hover:text-[#f0cd7a]"
+          : "border border-white/10 text-[#c6c5c1] hover:border-[#e2b64f]/40 hover:text-[#f0cd7a]"
       }`}
     >
       {children}
@@ -90,7 +90,7 @@ export function StatusBadge({ status }: { status: string }) {
       className={`rounded-full px-2.5 py-0.5 text-xs ${
         status === "Активный"
           ? "border border-[#e2b64f]/30 bg-[#e2b64f]/10 text-[#f0cd7a]"
-          : "border border-white/10 bg-white/5 text-[#9b9a97]"
+          : "border border-white/10 bg-white/5 text-[#c6c5c1]"
       }`}
     >
       {status}

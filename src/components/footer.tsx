@@ -51,7 +51,7 @@ export function Footer() {
           <div className="mb-6">
             <Logo size="md" />
           </div>
-          <p className="text-[0.95rem] leading-relaxed text-[#9b9a97]">
+          <p className="text-[1.05rem] leading-relaxed text-[#c6c5c1]">
             ООО МКК «ФИНДРАЙВ» — быстрые займы под залог автомобилей. Деньги за час, авто
             остаётся у вас.
           </p>
@@ -59,7 +59,7 @@ export function Footer() {
 
         <div>
           <h4 className="eyebrow mb-6">Заёмщикам</h4>
-          <ul className="space-y-3 text-[0.95rem] text-[#9b9a97]">
+          <ul className="space-y-3 text-[1.05rem] text-[#c6c5c1]">
             <li>
               <button onClick={() => scrollTo("features")} className="transition-colors duration-300 hover:text-[#f0cd7a]">
                 Займы под залог авто
@@ -80,7 +80,7 @@ export function Footer() {
 
         <div>
           <h4 className="eyebrow mb-6">О компании</h4>
-          <ul className="space-y-3 text-[0.95rem] text-[#9b9a97]">
+          <ul className="space-y-3 text-[1.05rem] text-[#c6c5c1]">
             <li>
               <button onClick={() => router.push("/register?role=borrower")} className="transition-colors duration-300 hover:text-[#f0cd7a]">
                 Подать заявку
@@ -121,7 +121,7 @@ export function Footer() {
                         <a
                           href={doc.href}
                           download
-                          className="flex items-start gap-2 text-[0.85rem] leading-snug transition-colors duration-300 hover:text-[#f0cd7a]"
+                          className="flex items-start gap-2 text-[1.05rem] leading-snug transition-colors duration-300 hover:text-[#f0cd7a]"
                         >
                           <FileText size={13} className="mt-0.5 shrink-0 text-[#e2b64f]/60" />
                           {doc.label}
@@ -137,7 +137,7 @@ export function Footer() {
 
         <div>
           <h4 className="eyebrow mb-6">Контакты</h4>
-          <ul className="space-y-3 text-[0.95rem] text-[#9b9a97]">
+          <ul className="space-y-3 text-[1.05rem] text-[#c6c5c1]">
             <li>
               <a href="mailto:findrive78@yandex.ru" className="flex items-center gap-2.5 transition-colors duration-300 hover:text-[#f0cd7a]">
                 <Mail size={15} className="text-[#e2b64f]/70" />
@@ -158,7 +158,7 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="container relative mt-20 border-t border-white/[0.05] pt-8 text-center text-sm text-[#6f6e6b]">
+      <div className="container relative mt-20 border-t border-white/[0.05] pt-8 text-center text-sm text-[#a5a4a0]">
         © 2026 ООО МКК «ФИНДРАЙВ». Все права защищены.
       </div>
     </footer>

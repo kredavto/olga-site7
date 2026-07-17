@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
@@ -25,6 +25,18 @@ function RegisterForm() {
   const router = useRouter();
 
   const setField = (field: string, value: string) => setForm({ ...form, [field]: value });
+
+  // возврат с FormSubmit после нативной отправки с вложениями
+  useEffect(() => {
+    if (searchParams.get("sent")) {
+      toast.success("Заявка отправлена!", {
+        description: "Мы свяжемся с вами в ближайшее время",
+      });
+      const t = setTimeout(() => router.push("/"), 1500);
+      return () => clearTimeout(t);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const submit = async () => {
     if (!form.name || !form.phone) {
@@ -51,37 +63,55 @@ function RegisterForm() {
         }
       }
 
-      // файлы отправляются вложениями в письмо (лимит FormSubmit — 10 МБ суммарно)
-      const ATTACH_LIMIT = 10 * 1024 * 1024;
-      const totalSize = files.reduce((sum, f) => sum + f.size, 0);
-      const attachFiles = totalSize <= ATTACH_LIMIT;
-
-      const fd = new FormData();
-      fd.append("_subject", "Новая заявка с сайта «ФИНДРАЙВ»");
-      fd.append("_template", "table");
-      fd.append("Имя", form.name);
-      fd.append("Телефон", form.phone);
-      fd.append("Сумма", form.amount || "—");
-      fd.append("Email", form.email || "—");
-      fd.append(
-        "Фото документов",
-        files.length
-          ? attachFiles
-            ? `во вложении (${files.map((f) => f.name).join(", ")})` +
-              (uploadedUrls.length ? `\n${uploadedUrls.join("\n")}` : "")
-            : uploadedUrls.length
-              ? `файлы больше 10 МБ, доступны по ссылкам:\n${uploadedUrls.join("\n")}`
-              : "файлы больше 10 МБ, приложить не удалось"
-          : "не приложены",
-      );
-      if (attachFiles) {
-        files.forEach((file, i) => fd.append(`attachment_${i + 1}`, file, file.name));
+      if (files.length > 0) {
+        // вложения доставляются только при нативной multipart-отправке формы:
+        // AJAX-эндпоинт FormSubmit отбрасывает файлы
+        const nf = document.createElement("form");
+        nf.method = "POST";
+        nf.action = `https://formsubmit.co/${LEAD_EMAIL}`;
+        nf.enctype = "multipart/form-data";
+        nf.style.display = "none";
+        const hidden = (name: string, value: string) => {
+          const input = document.createElement("input");
+          input.type = "hidden";
+          input.name = name;
+          input.value = value;
+          nf.appendChild(input);
+        };
+        hidden("_subject", "Новая заявка с сайта «ФИНДРАЙВ»");
+        hidden("_template", "table");
+        hidden("_captcha", "false");
+        hidden("_next", `${window.location.origin}/register?sent=1`);
+        hidden("Имя", form.name);
+        hidden("Телефон", form.phone);
+        hidden("Сумма", form.amount || "—");
+        hidden("Email", form.email || "—");
+        if (uploadedUrls.length) hidden("Резервные ссылки", uploadedUrls.join("\n"));
+        const fileInput = document.createElement("input");
+        fileInput.type = "file";
+        fileInput.name = "attachment";
+        fileInput.multiple = true;
+        const dt = new DataTransfer();
+        files.forEach((f) => dt.items.add(f));
+        fileInput.files = dt.files;
+        nf.appendChild(fileInput);
+        document.body.appendChild(nf);
+        nf.submit();
+        return; // страница уйдёт на FormSubmit и вернётся на /register?sent=1
       }
 
       const res = await fetch(`https://formsubmit.co/ajax/${LEAD_EMAIL}`, {
         method: "POST",
-        headers: { Accept: "application/json" },
-        body: fd,
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          _subject: "Новая заявка с сайта «ФИНДРАЙВ»",
+          _template: "table",
+          Имя: form.name,
+          Телефон: form.phone,
+          Сумма: form.amount || "—",
+          Email: form.email || "—",
+          "Фото документов": "не приложены",
+        }),
       });
       if (!res.ok) throw new Error("Не удалось отправить заявку");
 

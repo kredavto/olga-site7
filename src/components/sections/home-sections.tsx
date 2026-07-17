@@ -122,6 +122,7 @@ export function Hero() {
           initial={{ opacity: 0, x: 48, filter: "blur(10px)" }}
           animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
           transition={{ duration: 1, delay: 1.7, ease: [0.22, 1, 0.36, 1] }}
+          className="lg:-mt-10"
         >
           <TiltCard max={6} className="rounded-3xl">
             <LoanCalculator id="calculator" />

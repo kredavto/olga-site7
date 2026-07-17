@@ -33,8 +33,8 @@ function RegisterForm() {
     }
     setSubmitting(true);
     try {
+      // резервная копия файлов в хранилище (не блокирует отправку заявки)
       const uploadedUrls: string[] = [];
-      const failedFiles: string[] = [];
       const prefix = `${Date.now()}_${form.phone.replace(/\D/g, "") || "lead"}`;
       for (const file of files) {
         const safeName = file.name.replace(/[^\w.\-]+/g, "_");
@@ -47,29 +47,41 @@ function RegisterForm() {
           const { data } = supabase.storage.from(STORAGE_BUCKET).getPublicUrl(path);
           uploadedUrls.push(data.publicUrl);
         } catch {
-          // хранилище недоступно — заявка всё равно должна уйти на почту
-          failedFiles.push(file.name);
+          // хранилище недоступно — файлы всё равно уйдут вложениями в письме
         }
       }
-      const filesReport = [
-        ...uploadedUrls,
-        ...(failedFiles.length
-          ? [`не удалось загрузить: ${failedFiles.join(", ")}`]
-          : []),
-      ];
+
+      // файлы отправляются вложениями в письмо (лимит FormSubmit — 10 МБ суммарно)
+      const ATTACH_LIMIT = 10 * 1024 * 1024;
+      const totalSize = files.reduce((sum, f) => sum + f.size, 0);
+      const attachFiles = totalSize <= ATTACH_LIMIT;
+
+      const fd = new FormData();
+      fd.append("_subject", "Новая заявка с сайта «ФИНДРАЙВ»");
+      fd.append("_template", "table");
+      fd.append("Имя", form.name);
+      fd.append("Телефон", form.phone);
+      fd.append("Сумма", form.amount || "—");
+      fd.append("Email", form.email || "—");
+      fd.append(
+        "Фото документов",
+        files.length
+          ? attachFiles
+            ? `во вложении (${files.map((f) => f.name).join(", ")})` +
+              (uploadedUrls.length ? `\n${uploadedUrls.join("\n")}` : "")
+            : uploadedUrls.length
+              ? `файлы больше 10 МБ, доступны по ссылкам:\n${uploadedUrls.join("\n")}`
+              : "файлы больше 10 МБ, приложить не удалось"
+          : "не приложены",
+      );
+      if (attachFiles) {
+        files.forEach((file, i) => fd.append(`attachment_${i + 1}`, file, file.name));
+      }
 
       const res = await fetch(`https://formsubmit.co/ajax/${LEAD_EMAIL}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
-          _subject: "Новая заявка с сайта «ФИНДРАЙВ»",
-          _template: "table",
-          Имя: form.name,
-          Телефон: form.phone,
-          Сумма: form.amount || "—",
-          Email: form.email || "—",
-          "Фото документов": filesReport.length ? filesReport.join("\n") : "не приложены",
-        }),
+        headers: { Accept: "application/json" },
+        body: fd,
       });
       if (!res.ok) throw new Error("Не удалось отправить заявку");
 

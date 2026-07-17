@@ -34,17 +34,29 @@ function RegisterForm() {
     setSubmitting(true);
     try {
       const uploadedUrls: string[] = [];
+      const failedFiles: string[] = [];
       const prefix = `${Date.now()}_${form.phone.replace(/\D/g, "") || "lead"}`;
       for (const file of files) {
         const safeName = file.name.replace(/[^\w.\-]+/g, "_");
         const path = `${prefix}/${safeName}`;
-        const { error } = await supabase.storage
-          .from(STORAGE_BUCKET)
-          .upload(path, file, { cacheControl: "3600", upsert: false });
-        if (error) throw new Error(`Не удалось загрузить файл: ${error.message}`);
-        const { data } = supabase.storage.from(STORAGE_BUCKET).getPublicUrl(path);
-        uploadedUrls.push(data.publicUrl);
+        try {
+          const { error } = await supabase.storage
+            .from(STORAGE_BUCKET)
+            .upload(path, file, { cacheControl: "3600", upsert: false });
+          if (error) throw new Error(error.message);
+          const { data } = supabase.storage.from(STORAGE_BUCKET).getPublicUrl(path);
+          uploadedUrls.push(data.publicUrl);
+        } catch {
+          // хранилище недоступно — заявка всё равно должна уйти на почту
+          failedFiles.push(file.name);
+        }
       }
+      const filesReport = [
+        ...uploadedUrls,
+        ...(failedFiles.length
+          ? [`не удалось загрузить: ${failedFiles.join(", ")}`]
+          : []),
+      ];
 
       const res = await fetch(`https://formsubmit.co/ajax/${LEAD_EMAIL}`, {
         method: "POST",
@@ -56,7 +68,7 @@ function RegisterForm() {
           Телефон: form.phone,
           Сумма: form.amount || "—",
           Email: form.email || "—",
-          "Фото документов": uploadedUrls.length ? uploadedUrls.join("\n") : "не приложены",
+          "Фото документов": filesReport.length ? filesReport.join("\n") : "не приложены",
         }),
       });
       if (!res.ok) throw new Error("Не удалось отправить заявку");

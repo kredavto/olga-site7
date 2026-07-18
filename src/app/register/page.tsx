@@ -63,27 +63,25 @@ function RegisterForm() {
         }
       }
 
-      // основной путь: свой API — письмо с настоящими вложениями через SMTP
+      // основной канал: Telegram (файлы приходят документами в чат)
       let sent = false;
       try {
-        const apiRes = await fetch("/api/lead", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
+        const { data, error } = await supabase.functions.invoke("send-lead", {
+          body: {
             name: form.name,
             phone: form.phone,
             amount: form.amount,
             email: form.email,
             fileUrls: uploadedUrls,
-          }),
+          },
         });
-        sent = apiRes.ok;
+        sent = !error && !!data?.success;
       } catch {
         sent = false;
       }
 
-      // резервный путь: FormSubmit со ссылками на файлы
-      if (!sent) {
+      // дублирующий канал: письмо на почту (со ссылками на файлы)
+      try {
         const res = await fetch(`https://formsubmit.co/ajax/${LEAD_EMAIL}`, {
           method: "POST",
           headers: { "Content-Type": "application/json", Accept: "application/json" },
@@ -97,8 +95,12 @@ function RegisterForm() {
             "Фото документов": uploadedUrls.length ? uploadedUrls.join("\n") : "не приложены",
           }),
         });
-        if (!res.ok) throw new Error("Не удалось отправить заявку");
+        if (res.ok) sent = true;
+      } catch {
+        // почтовый канал не сработал — достаточно Telegram
       }
+
+      if (!sent) throw new Error("Не удалось отправить заявку");
 
       toast.success("Заявка отправлена!", {
         description: "Мы свяжемся с вами в ближайшее время",

@@ -48,9 +48,9 @@ function RegisterForm() {
       // резервная копия файлов в хранилище (не блокирует отправку заявки)
       const uploadedUrls: string[] = [];
       const prefix = `${Date.now()}_${form.phone.replace(/\D/g, "") || "lead"}`;
-      for (const file of files) {
+      for (const [index, file] of files.entries()) {
         const safeName = file.name.replace(/[^\w.\-]+/g, "_");
-        const path = `${prefix}/${safeName}`;
+        const path = `${prefix}/${index + 1}_${safeName}`;
         try {
           const { error } = await supabase.storage
             .from(STORAGE_BUCKET)

@@ -125,15 +125,15 @@ export function InvestorCalculator() {
   const monthlyIncome = useMemo(() => Math.round((amount * INVEST_RATE) / 12), [amount]);
 
   return (
-    <div className="glass-strong reflect rounded-3xl p-8 lg:p-12">
-      <p className="eyebrow mb-3">Инвесторам</p>
-      <h3 className="display text-2xl lg:text-3xl mb-9">Калькулятор инвестора</h3>
+    <div className="glass-strong reflect rounded-3xl p-6 lg:p-8">
+      <p className="eyebrow mb-2">Инвесторам</p>
+      <h3 className="display text-xl lg:text-2xl mb-5">Калькулятор инвестора</h3>
 
-      <div className="space-y-8">
+      <div className="space-y-4">
         <div>
           <div className="flex items-baseline justify-between gap-4 mb-1.5">
             <label className="lux-label mb-0">Предлагаемая сумма инвестиций</label>
-            <p className="display text-2xl lg:text-4xl text-gold whitespace-nowrap">
+            <p className="display text-xl lg:text-2xl text-gold whitespace-nowrap">
               <AnimatedNumber value={amount} /> ₽
             </p>
           </div>
@@ -145,7 +145,7 @@ export function InvestorCalculator() {
             step={100_000}
             aria-label="Предлагаемая сумма инвестиций"
           />
-          <div className="mt-2 flex justify-between text-sm text-[#a5a4a0]">
+          <div className="mt-1 flex justify-between text-sm text-[#a5a4a0]">
             <span>1 млн ₽</span>
             <span>10 млн ₽</span>
           </div>
@@ -154,7 +154,7 @@ export function InvestorCalculator() {
         <div>
           <div className="flex items-baseline justify-between gap-4 mb-1.5">
             <label className="lux-label mb-0">Срок инвестиций</label>
-            <p className="display text-2xl lg:text-4xl whitespace-nowrap">
+            <p className="display text-xl lg:text-2xl whitespace-nowrap">
               {years} {years === 1 ? "год" : "года"}
             </p>
           </div>
@@ -166,31 +166,31 @@ export function InvestorCalculator() {
             step={1}
             aria-label="Срок инвестиций"
           />
-          <div className="mt-2 flex justify-between text-sm text-[#a5a4a0]">
+          <div className="mt-1 flex justify-between text-sm text-[#a5a4a0]">
             <span>1 год</span>
             <span>3 года</span>
           </div>
         </div>
 
-        <div>
-          <label className="lux-label">Процентная ставка</label>
-          <p className="display text-2xl lg:text-4xl text-gold">24% годовых</p>
+        <div className="flex items-baseline justify-between gap-4">
+          <label className="lux-label mb-0">Процентная ставка</label>
+          <p className="display text-xl lg:text-2xl text-gold">24% годовых</p>
         </div>
 
         <div className="hairline" />
 
-        <div>
-          <p className="lux-label">Ежемесячная доходность</p>
-          <p className="display text-4xl lg:text-5xl text-gold drop-shadow-[0_0_24px_rgba(226,182,79,0.35)]">
+        <div className="flex items-end justify-between gap-4">
+          <p className="lux-label mb-0">Ежемесячная доходность</p>
+          <p className="display text-3xl lg:text-4xl text-gold drop-shadow-[0_0_24px_rgba(226,182,79,0.35)]">
             <AnimatedNumber value={monthlyIncome} /> ₽
           </p>
         </div>
       </div>
 
-      <Magnetic className="mt-10 block w-full" strength={0.12}>
+      <Magnetic className="mt-5 block w-full" strength={0.12}>
         <button
           onClick={() => router.push("/register?role=investor")}
-          className="btn-gold glow-pulse h-14 w-full text-base"
+          className="btn-gold glow-pulse h-12 w-full text-base"
         >
           Инвестировать
         </button>

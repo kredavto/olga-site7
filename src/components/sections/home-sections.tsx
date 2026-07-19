@@ -200,7 +200,7 @@ const FEATURES = [
 export function Features() {
   const router = useRouter();
   return (
-    <section id="features" className="relative py-28 lg:py-36 bg-[#0a0a0c]">
+    <section id="features" className="scroll-mt-28 relative py-28 lg:py-36 bg-[#0a0a0c]">
       <div className="pointer-events-none absolute inset-x-0 top-0 hairline" aria-hidden />
       <div className="container">
         <Reveal className="mb-16 text-center">
@@ -249,7 +249,7 @@ const STATS = [
 export function Stats() {
   const router = useRouter();
   return (
-    <section id="stats" className="relative overflow-hidden py-28 lg:py-36">
+    <section id="stats" className="scroll-mt-28 relative overflow-hidden py-28 lg:py-36">
       <div className="orb top-10 left-1/3 h-[30rem] w-[30rem] bg-[#e2b64f]/[0.04]" aria-hidden />
       <div className="container relative">
         <Reveal className="mb-20 text-center">
@@ -284,18 +284,18 @@ export function Stats() {
 /* ==================================================================== */
 export function InvestSection() {
   return (
-    <section id="invest" className="relative py-28 lg:py-36 bg-[#0a0a0c]">
+    <section id="invest" className="scroll-mt-28 relative py-16 lg:py-20 bg-[#0a0a0c]">
       <div className="pointer-events-none absolute inset-x-0 top-0 hairline" aria-hidden />
-      <div className="container max-w-4xl">
-        <Reveal className="mb-8 text-center">
-          <p className="eyebrow mb-4 flex items-center justify-center gap-3">
+      <div className="container max-w-3xl">
+        <Reveal className="mb-4 text-center">
+          <p className="eyebrow mb-3 flex items-center justify-center gap-3">
             <Sparkles size={14} /> Капиталу — работу
           </p>
-          <WordReveal as="h2" text="Условия для инвестирования" className="display text-4xl lg:text-5xl" />
+          <WordReveal as="h2" text="Условия для инвестирования" className="display text-3xl lg:text-4xl" />
         </Reveal>
 
         <Reveal delay={0.1}>
-          <p className="mx-auto mb-14 max-w-2xl text-center text-lg lg:text-xl leading-relaxed text-[#c6c5c1]">
+          <p className="mx-auto mb-7 max-w-2xl text-center text-lg leading-relaxed text-[#c6c5c1]">
             Привлекаем инвестиции под{" "}
             <span className="display text-gold">24% годовых</span> с ежемесячной выплатой
             процентов.
@@ -327,7 +327,7 @@ const REQUIREMENTS = [
 export function Requirements() {
   const router = useRouter();
   return (
-    <section id="requirements" className="relative py-28 lg:py-36">
+    <section id="requirements" className="scroll-mt-28 relative py-28 lg:py-36">
       <div className="container max-w-5xl">
         <Reveal className="mb-16 text-center">
           <p className="eyebrow mb-4 flex items-center justify-center gap-3">
@@ -370,7 +370,7 @@ export function Requirements() {
 export function Partners() {
   const router = useRouter();
   return (
-    <section id="partners" className="relative py-28 lg:py-36 bg-[#0a0a0c]">
+    <section id="partners" className="scroll-mt-28 relative py-28 lg:py-36 bg-[#0a0a0c]">
       <div className="pointer-events-none absolute inset-x-0 top-0 hairline" aria-hidden />
       <div className="container max-w-4xl">
         <Reveal className="mb-16 text-center">
@@ -447,7 +447,7 @@ const FAQ_ITEMS = [
 
 export function Faq() {
   return (
-    <section id="faq" className="relative py-28 lg:py-36">
+    <section id="faq" className="scroll-mt-28 relative py-28 lg:py-36">
       <div className="container max-w-3xl">
         <Reveal className="mb-16 text-center">
           <p className="eyebrow mb-4">О компании</p>

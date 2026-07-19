@@ -20,10 +20,12 @@ function RegisterForm() {
     phone: searchParams.get("phone") || "+7 ",
     amount: "",
     email: "",
+    term: "",
   });
   const [files, setFiles] = useState<File[]>([]);
   const router = useRouter();
   const isPartner = searchParams.get("role") === "partner";
+  const isInvestor = searchParams.get("role") === "investor";
 
   const setField = (field: string, value: string) => setForm({ ...form, [field]: value });
 
@@ -69,11 +71,21 @@ function RegisterForm() {
       try {
         const { data, error } = await supabase.functions.invoke("send-lead", {
           body: {
-            name: isPartner ? `${form.name} (партнёрская программа)` : form.name,
+            name: isPartner
+              ? `${form.name} (партнёрская программа)`
+              : isInvestor
+                ? `${form.name} (инвестор)`
+                : form.name,
             phone: form.phone,
-            amount: isPartner ? "" : form.amount,
+            amount: isPartner
+              ? ""
+              : isInvestor
+                ? [form.amount, form.term ? `срок: ${form.term}` : ""]
+                    .filter(Boolean)
+                    .join(", ")
+                : form.amount,
             email: form.email,
-            fileUrls: isPartner ? [] : uploadedUrls,
+            fileUrls: isPartner || isInvestor ? [] : uploadedUrls,
           },
         });
         sent = !error && !!data?.success;
@@ -87,7 +99,17 @@ function RegisterForm() {
           method: "POST",
           headers: { "Content-Type": "application/json", Accept: "application/json" },
           body: JSON.stringify(
-            isPartner
+            isInvestor
+              ? {
+                  _subject: "Заявка от инвестора — «ФИНДРАЙВ»",
+                  _template: "table",
+                  Имя: form.name,
+                  Телефон: form.phone,
+                  Email: form.email || "—",
+                  "Сумма инвестиций": form.amount || "—",
+                  "Срок инвестиций": form.term || "—",
+                }
+              : isPartner
               ? {
                   _subject: "Заявка на участие в партнёрской программе — «ФИНДРАЙВ»",
                   _template: "table",
@@ -116,7 +138,7 @@ function RegisterForm() {
       toast.success("Заявка отправлена!", {
         description: "Мы свяжемся с вами в ближайшее время",
       });
-      setForm({ name: "", phone: "", amount: "", email: "" });
+      setForm({ name: "", phone: "", amount: "", email: "", term: "" });
       setFiles([]);
       setTimeout(() => router.push("/"), 1500);
     } catch (err) {
@@ -143,7 +165,11 @@ function RegisterForm() {
         <div className="mb-8 text-center">
           <Logo size="md" className="justify-center mb-6" />
           <h1 className="display text-3xl mb-2">
-            {isPartner ? "Заявка на участие в партнёрской программе" : "Подать заявку"}
+            {isPartner
+              ? "Заявка на участие в партнёрской программе"
+              : isInvestor
+                ? "Заявка от инвестора"
+                : "Подать заявку"}
           </h1>
           <p className="text-[#c6c5c1]">Оставьте контакты — перезвоним и всё расскажем</p>
         </div>
@@ -168,7 +194,7 @@ function RegisterForm() {
               placeholder="+7 (999) 123-45-67"
             />
           </div>
-          {!isPartner && (
+          {!isPartner && !isInvestor && (
           <div>
             <label className="lux-label">Сумма *</label>
             <input
@@ -191,7 +217,32 @@ function RegisterForm() {
               placeholder="ivan@mail.ru"
             />
           </div>
-          {!isPartner && (
+          {isInvestor && (
+            <>
+              <div>
+                <label className="lux-label">Сумма инвестиций</label>
+                <input
+                  className="lux-input"
+                  type="text"
+                  inputMode="numeric"
+                  value={form.amount}
+                  onChange={(e) => setField("amount", e.target.value)}
+                  placeholder="3 000 000 ₽"
+                />
+              </div>
+              <div>
+                <label className="lux-label">Срок инвестиций</label>
+                <input
+                  className="lux-input"
+                  type="text"
+                  value={form.term}
+                  onChange={(e) => setField("term", e.target.value)}
+                  placeholder="1 год"
+                />
+              </div>
+            </>
+          )}
+          {!isPartner && !isInvestor && (
           <div>
             <label className="lux-label">Фото документов</label>
             <input

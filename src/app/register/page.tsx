@@ -23,6 +23,7 @@ function RegisterForm() {
   });
   const [files, setFiles] = useState<File[]>([]);
   const router = useRouter();
+  const isPartner = searchParams.get("role") === "partner";
 
   const setField = (field: string, value: string) => setForm({ ...form, [field]: value });
 
@@ -68,11 +69,11 @@ function RegisterForm() {
       try {
         const { data, error } = await supabase.functions.invoke("send-lead", {
           body: {
-            name: form.name,
+            name: isPartner ? `${form.name} (партнёрская программа)` : form.name,
             phone: form.phone,
-            amount: form.amount,
+            amount: isPartner ? "" : form.amount,
             email: form.email,
-            fileUrls: uploadedUrls,
+            fileUrls: isPartner ? [] : uploadedUrls,
           },
         });
         sent = !error && !!data?.success;
@@ -85,15 +86,25 @@ function RegisterForm() {
         const res = await fetch(`https://formsubmit.co/ajax/${LEAD_EMAIL}`, {
           method: "POST",
           headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify({
-            _subject: "Новая заявка с сайта «ФИНДРАЙВ»",
-            _template: "table",
-            Имя: form.name,
-            Телефон: form.phone,
-            Сумма: form.amount || "—",
-            Email: form.email || "—",
-            "Фото документов": uploadedUrls.length ? uploadedUrls.join("\n") : "не приложены",
-          }),
+          body: JSON.stringify(
+            isPartner
+              ? {
+                  _subject: "Заявка на участие в партнёрской программе — «ФИНДРАЙВ»",
+                  _template: "table",
+                  Имя: form.name,
+                  Телефон: form.phone,
+                  Email: form.email || "—",
+                }
+              : {
+                  _subject: "Новая заявка с сайта «ФИНДРАЙВ»",
+                  _template: "table",
+                  Имя: form.name,
+                  Телефон: form.phone,
+                  Сумма: form.amount || "—",
+                  Email: form.email || "—",
+                  "Фото документов": uploadedUrls.length ? uploadedUrls.join("\n") : "не приложены",
+                },
+          ),
         });
         if (res.ok) sent = true;
       } catch {
@@ -131,7 +142,9 @@ function RegisterForm() {
       >
         <div className="mb-8 text-center">
           <Logo size="md" className="justify-center mb-6" />
-          <h1 className="display text-3xl mb-2">Подать заявку</h1>
+          <h1 className="display text-3xl mb-2">
+            {isPartner ? "Заявка на участие в партнёрской программе" : "Подать заявку"}
+          </h1>
           <p className="text-[#c6c5c1]">Оставьте контакты — перезвоним и всё расскажем</p>
         </div>
 
@@ -155,6 +168,7 @@ function RegisterForm() {
               placeholder="+7 (999) 123-45-67"
             />
           </div>
+          {!isPartner && (
           <div>
             <label className="lux-label">Сумма *</label>
             <input
@@ -166,6 +180,7 @@ function RegisterForm() {
               placeholder="500 000 ₽"
             />
           </div>
+          )}
           <div>
             <label className="lux-label">Email</label>
             <input
@@ -176,6 +191,7 @@ function RegisterForm() {
               placeholder="ivan@mail.ru"
             />
           </div>
+          {!isPartner && (
           <div>
             <label className="lux-label">Фото документов</label>
             <input
@@ -200,6 +216,7 @@ function RegisterForm() {
               </p>
             )}
           </div>
+          )}
 
           <Magnetic className="block w-full pt-1" strength={0.1}>
             <button

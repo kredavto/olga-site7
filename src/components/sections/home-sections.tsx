@@ -124,9 +124,7 @@ export function Hero() {
           transition={{ duration: 1, delay: 1.7, ease: [0.22, 1, 0.36, 1] }}
           className="lg:-mt-10"
         >
-          <TiltCard max={6} className="rounded-3xl">
-            <LoanCalculator id="calculator" />
-          </TiltCard>
+          <LoanCalculator id="calculator" />
         </motion.div>
       </div>
     </section>
@@ -303,9 +301,7 @@ export function InvestSection() {
         </Reveal>
 
         <Reveal delay={0.15}>
-          <TiltCard max={3} className="rounded-3xl">
-            <InvestorCalculator />
-          </TiltCard>
+          <InvestorCalculator />
         </Reveal>
       </div>
     </section>

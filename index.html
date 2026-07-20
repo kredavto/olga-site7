@@ -39,7 +39,7 @@ a{color:inherit;text-decoration:none}
   transition:opacity .8s ease,visibility .8s;
 }
 #preloader.done{opacity:0;visibility:hidden}
-#preCanvas{width:440px;height:189px;max-width:80vw}
+#preCanvas{width:min(1320px,92vw,80vh * 2.333);aspect-ratio:560/240;height:auto}
 .pre-bar{width:180px;height:1px;background:rgba(255,255,255,.1);overflow:hidden;border-radius:2px}
 .pre-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));animation:load 1.6s ease forwards}
 @keyframes load{to{width:100%}}
@@ -580,7 +580,8 @@ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
       pts=[];
       for(let py=0;py<240;py+=3)for(let px=0;px<560;px+=3){
         const i=(py*560+px)*4,r=d[i],g=d[i+1],b=d[i+2];
-        if(r+g+b>120)pts.push({tx:px,ty:py,x:Math.random()*560,y:Math.random()*240,cl:`rgb(${r},${g},${b})`});
+        if(r+g+b>45)pts.push({tx:px,ty:py,x:Math.random()*560,y:Math.random()*240,
+          cl:`rgb(${Math.min(255,r+30)},${Math.min(255,g+30)},${Math.min(255,b+30)})`});
       }
       x.clearRect(0,0,560,240);
       t0=performance.now();

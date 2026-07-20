@@ -39,7 +39,7 @@ a{color:inherit;text-decoration:none}
   transition:opacity .8s ease,visibility .8s;
 }
 #preloader.done{opacity:0;visibility:hidden}
-#preCanvas{width:280px;height:120px}
+#preCanvas{width:440px;height:189px;max-width:80vw}
 .pre-bar{width:180px;height:1px;background:rgba(255,255,255,.1);overflow:hidden;border-radius:2px}
 .pre-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));animation:load 1.6s ease forwards}
 @keyframes load{to{width:100%}}
@@ -557,24 +557,47 @@ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 /* ============ Preloader: particles forming logo ============ */
 (()=>{
   const c=$('#preCanvas'),x=c.getContext('2d');
-  x.font='800 84px Unbounded, sans-serif';
-  x.fillStyle='#fff';x.textAlign='center';x.textBaseline='middle';
-  x.fillText('ACR',280,120);
-  const d=x.getImageData(0,0,560,240).data,pts=[];
-  for(let py=0;py<240;py+=5)for(let px=0;px<560;px+=5)
-    if(d[(py*560+px)*4+3]>128)pts.push({tx:px,ty:py,x:Math.random()*560,y:Math.random()*240});
-  x.clearRect(0,0,560,240);
+  let pts=[];
+  function textFallback(){
+    x.font='800 84px Unbounded, sans-serif';
+    x.fillStyle='#fff';x.textAlign='center';x.textBaseline='middle';
+    x.fillText('ACR',280,120);
+    const d=x.getImageData(0,0,560,240).data;
+    pts=[];
+    for(let py=0;py<240;py+=5)for(let px=0;px<560;px+=5)
+      if(d[(py*560+px)*4+3]>128)pts.push({tx:px,ty:py,x:Math.random()*560,y:Math.random()*240,cl:Math.random()<.12?'#38e5ff':'rgba(255,255,255,.85)'});
+    x.clearRect(0,0,560,240);
+  }
+  const li=new Image();
+  li.src='logotip.png';
+  li.onload=()=>{
+    try{
+      // fit logo into the canvas, sample bright pixels with their colors
+      const s=Math.min(560/li.width,240/li.height),lw=li.width*s,lh=li.height*s;
+      x.clearRect(0,0,560,240);
+      x.drawImage(li,(560-lw)/2,(240-lh)/2,lw,lh);
+      const d=x.getImageData(0,0,560,240).data;
+      pts=[];
+      for(let py=0;py<240;py+=3)for(let px=0;px<560;px+=3){
+        const i=(py*560+px)*4,r=d[i],g=d[i+1],b=d[i+2];
+        if(r+g+b>120)pts.push({tx:px,ty:py,x:Math.random()*560,y:Math.random()*240,cl:`rgb(${r},${g},${b})`});
+      }
+      x.clearRect(0,0,560,240);
+      t0=performance.now();
+    }catch(e){textFallback();t0=performance.now();}
+  };
+  li.onerror=textFallback;
   let t0=performance.now();
   (function anim(now){
     const p=Math.min((now-t0)/1400,1),e=1-Math.pow(1-p,3);
     x.clearRect(0,0,560,240);
     for(const pt of pts){
       const px=lerp(pt.x,pt.tx,e),py=lerp(pt.y,pt.ty,e);
-      x.fillStyle=Math.random()<.12?'#38e5ff':'rgba(255,255,255,.85)';
-      x.fillRect(px,py,2.4,2.4);
+      x.fillStyle=pt.cl;
+      x.fillRect(px,py,2.2,2.2);
     }
-    if(document.readyState==='complete'&&p>=1){
-      setTimeout(()=>$('#preloader').classList.add('done'),350);
+    if(document.readyState==='complete'&&p>=1&&pts.length){
+      setTimeout(()=>$('#preloader').classList.add('done'),500);
     } else requestAnimationFrame(anim);
   })(t0);
   addEventListener('load',()=>setTimeout(()=>$('#preloader').classList.add('done'),1800));

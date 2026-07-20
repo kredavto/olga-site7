@@ -350,7 +350,7 @@ footer{
 
 <!-- Preloader -->
 <div id="preloader">
-  <canvas id="preCanvas" width="560" height="240"></canvas>
+  <canvas id="preCanvas" width="1680" height="720"></canvas>
   <div class="pre-bar"><i></i></div>
 </div>
 
@@ -557,33 +557,34 @@ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 /* ============ Preloader: particles forming logo ============ */
 (()=>{
   const c=$('#preCanvas'),x=c.getContext('2d');
-  let pts=[];
+  const CW=1680,CH=720;
+  let pts=[],logoReady=false,lw=0,lh=0;
   function textFallback(){
-    x.font='800 84px Unbounded, sans-serif';
+    x.font='800 250px Unbounded, sans-serif';
     x.fillStyle='#fff';x.textAlign='center';x.textBaseline='middle';
-    x.fillText('ACR',280,120);
-    const d=x.getImageData(0,0,560,240).data;
+    x.fillText('ACR',CW/2,CH/2);
+    const d=x.getImageData(0,0,CW,CH).data;
     pts=[];
-    for(let py=0;py<240;py+=5)for(let px=0;px<560;px+=5)
-      if(d[(py*560+px)*4+3]>128)pts.push({tx:px,ty:py,x:Math.random()*560,y:Math.random()*240,cl:Math.random()<.12?'#38e5ff':'rgba(255,255,255,.85)'});
-    x.clearRect(0,0,560,240);
+    for(let py=0;py<CH;py+=14)for(let px=0;px<CW;px+=14)
+      if(d[(py*CW+px)*4+3]>128)pts.push({tx:px,ty:py,x:Math.random()*CW,y:Math.random()*CH,cl:Math.random()<.12?'#38e5ff':'rgba(255,255,255,.85)'});
+    x.clearRect(0,0,CW,CH);
   }
   const li=new Image();
   li.src='logotip.png';
   li.onload=()=>{
     try{
-      // fit logo into the canvas, sample bright pixels with their colors
-      const s=Math.min(560/li.width,240/li.height),lw=li.width*s,lh=li.height*s;
-      x.clearRect(0,0,560,240);
-      x.drawImage(li,(560-lw)/2,(240-lh)/2,lw,lh);
-      const d=x.getImageData(0,0,560,240).data;
+      const sc=Math.min(CW/li.width,CH/li.height);lw=li.width*sc;lh=li.height*sc;
+      x.clearRect(0,0,CW,CH);
+      x.drawImage(li,(CW-lw)/2,(CH-lh)/2,lw,lh);
+      const d=x.getImageData(0,0,CW,CH).data;
       pts=[];
-      for(let py=0;py<240;py+=3)for(let px=0;px<560;px+=3){
-        const i=(py*560+px)*4,r=d[i],g=d[i+1],b=d[i+2];
-        if(r+g+b>45)pts.push({tx:px,ty:py,x:Math.random()*560,y:Math.random()*240,
+      for(let py=0;py<CH;py+=9)for(let px=0;px<CW;px+=9){
+        const i=(py*CW+px)*4,r=d[i],g=d[i+1],b=d[i+2];
+        if(r+g+b>45)pts.push({tx:px,ty:py,x:Math.random()*CW,y:Math.random()*CH,
           cl:`rgb(${Math.min(255,r+30)},${Math.min(255,g+30)},${Math.min(255,b+30)})`});
       }
-      x.clearRect(0,0,560,240);
+      x.clearRect(0,0,CW,CH);
+      logoReady=true;
       t0=performance.now();
     }catch(e){textFallback();t0=performance.now();}
   };
@@ -591,14 +592,21 @@ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   let t0=performance.now();
   (function anim(now){
     const p=Math.min((now-t0)/1400,1),e=1-Math.pow(1-p,3);
-    x.clearRect(0,0,560,240);
+    x.clearRect(0,0,CW,CH);
+    // sharp logo fades in as particles settle
+    const sharp=logoReady?Math.max(0,(p-.65)/.35):0;
     for(const pt of pts){
       const px=lerp(pt.x,pt.tx,e),py=lerp(pt.y,pt.ty,e);
       x.fillStyle=pt.cl;
-      x.fillRect(px,py,2.2,2.2);
+      x.fillRect(px,py,6.5,6.5);
+    }
+    if(sharp>0){
+      x.globalAlpha=sharp;
+      x.drawImage(li,(CW-lw)/2,(CH-lh)/2,lw,lh);
+      x.globalAlpha=1;
     }
     if(document.readyState==='complete'&&p>=1&&pts.length){
-      setTimeout(()=>$('#preloader').classList.add('done'),500);
+      setTimeout(()=>$('#preloader').classList.add('done'),650);
     } else requestAnimationFrame(anim);
   })(t0);
   addEventListener('load',()=>setTimeout(()=>$('#preloader').classList.add('done'),1800));

@@ -160,7 +160,63 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="container relative mt-20 border-t border-white/[0.05] pt-8 text-center text-sm text-[#a5a4a0]">
+      {/* регуляторная информация и QR-коды */}
+      <div className="container relative mt-16 border-t border-white/[0.05] pt-10">
+        <div className="grid gap-8 sm:grid-cols-3">
+          {[
+            {
+              qr: "/qr-cbr.svg",
+              label: "Интернет приемная ЦБ РФ:",
+              href: "https://www.cbr.ru/reception",
+              text: "https://www.cbr.ru/reception",
+            },
+            {
+              qr: "/qr-finombudsman.svg",
+              label: "Сайт финансового уполномоченного:",
+              href: "https://finombudsman.ru",
+              text: "https://finombudsman.ru",
+            },
+            {
+              qr: "/qr-sromir.svg",
+              label: "Сайт СРО \u00abМир\u00bb:",
+              href: "https://doc.sromir.ru/obrashchenie_v_sro_mir",
+              text: "https://doc.sromir.ru/obrashchenie_v_sro_mir",
+            },
+          ].map((item) => (
+            <div key={item.href} className="flex items-center gap-4">
+              <a
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="shrink-0 rounded-xl bg-white p-1.5 transition-shadow duration-300 hover:shadow-[0_0_24px_rgba(226,182,79,0.35)]"
+                aria-label={item.label}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={item.qr} alt={item.label} className="h-20 w-20" />
+              </a>
+              <div className="min-w-0">
+                <p className="text-sm text-[#c6c5c1]">{item.label}</p>
+                <a
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="break-all text-sm text-[#e2b64f] underline underline-offset-2 transition-colors hover:text-[#f0cd7a]"
+                >
+                  {item.text}
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+        <p className="mt-8 text-sm leading-relaxed text-[#a5a4a0]">
+          Общество с ограниченной ответственностью Микрокредитная компания «ФИНДРАЙВ».
+          ОГРН 1217800146024. ИНН 7816722290. Регистрационный номер в государственном
+          реестре МФО 2203140009792. ООО МКК «ФИНДРАЙВ» является членом СРО «МиР» —
+          Регистрационный Номер 78001270.
+        </p>
+      </div>
+
+      <div className="container relative mt-10 border-t border-white/[0.05] pt-8 text-center text-sm text-[#a5a4a0]">
         © 2026 ООО МКК «ФИНДРАЙВ». Все права защищены.
       </div>
     </footer>

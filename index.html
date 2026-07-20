@@ -116,6 +116,33 @@ h2 em{font-style:normal;background:none}
 #process{padding-top:40px;padding-bottom:40px}
 #process h2{margin-bottom:16px}
 #ai,#cases,#why{padding-top:60px;padding-bottom:60px}
+#works{padding-top:60px;padding-bottom:60px}
+.works-sub{color:#f2f2f7;font-size:18px;max-width:720px;margin:-30px 0 40px}
+.works-slider{position:relative}
+.ws-frame{
+  position:relative;aspect-ratio:16/9;border-radius:24px;overflow:hidden;
+  border:1px solid var(--border);
+  box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 50px rgba(56,229,255,.07);
+}
+.ws-frame img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;transition:opacity 1s ease,transform 6s linear;transform:scale(1.02);
+}
+.ws-frame img.on{opacity:1;transform:scale(1)}
+.ws-arrow{
+  position:absolute;top:50%;transform:translateY(-50%);z-index:3;
+  width:54px;height:54px;border-radius:50%;cursor:pointer;
+  background:rgba(5,5,5,.55);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.18);color:#fff;font-size:28px;line-height:1;
+  transition:all .3s;display:flex;align-items:center;justify-content:center;padding-bottom:4px;
+}
+.ws-arrow:hover{border-color:#f6e27a;color:#f6e27a;box-shadow:0 0 24px rgba(246,226,122,.3)}
+.ws-arrow.prev{left:18px}
+.ws-arrow.next{right:18px}
+.ws-dots{display:flex;gap:10px;justify-content:center;margin-top:22px}
+.ws-dots button{width:30px;height:3px;border:none;border-radius:2px;cursor:pointer;padding:0;
+  background:rgba(255,255,255,.22);transition:background .4s}
+.ws-dots button.on{background:linear-gradient(90deg,var(--accent),#f6e27a)}
 
 /* reveal */
 .reveal{opacity:0;transform:translateY(46px) scale(.98);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
@@ -425,6 +452,28 @@ footer{
       <ul><li>цифровые аватары</li><li>ИИ-ассистенты</li><li>ИИ-агенты</li><li>автоматизация процессов</li><li>генерация контента</li></ul></div>
     <div class="card reveal"><span class="num">09</span><div class="ico">📊</div><h3>Презентации</h3>
       <ul><li>продающие презентации</li><li>инвестиционные питч-деки</li><li>презентации для продаж</li></ul></div>
+  </div>
+</section>
+
+<!-- WORKS -->
+<section id="works">
+  <div class="kicker reveal">Наши работы</div>
+  <h2 class="reveal">Премиум сайты — <em>эксклюзивные проекты</em> для бизнеса</h2>
+  <p class="works-sub reveal">Уникальный стиль, сложная анимация и глубокий анализ аудитории.</p>
+  <div class="works-slider reveal">
+    <div class="ws-frame" id="wsFrame">
+      <img src="1.jpeg" alt="Премиум сайт — проект 1" class="on">
+      <img src="2.jpeg" alt="Премиум сайт — проект 2" loading="lazy">
+      <img src="3.jpeg" alt="Премиум сайт — проект 3" loading="lazy">
+      <img src="4.jpeg" alt="Премиум сайт — проект 4" loading="lazy">
+      <img src="5.jpeg" alt="Премиум сайт — проект 5" loading="lazy">
+      <img src="6.jpeg" alt="Премиум сайт — проект 6" loading="lazy">
+      <img src="7.jpeg" alt="Премиум сайт — проект 7" loading="lazy">
+      <img src="8.jpeg" alt="Премиум сайт — проект 8" loading="lazy">
+    </div>
+    <button class="ws-arrow prev" id="wsPrev" aria-label="Предыдущий">‹</button>
+    <button class="ws-arrow next" id="wsNext" aria-label="Следующий">›</button>
+    <div class="ws-dots" id="wsDots"></div>
   </div>
 </section>
 
@@ -812,6 +861,30 @@ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
     }
     requestAnimationFrame(draw);
   })();
+})();
+
+/* ============ Works slider ============ */
+(()=>{
+  const frame=$('#wsFrame');if(!frame)return;
+  const imgs=[...frame.querySelectorAll('img')],dotsBox=$('#wsDots');
+  let idx=0,timer;
+  imgs.forEach((_,k)=>{
+    const b=document.createElement('button');
+    b.setAttribute('aria-label','слайд '+(k+1));
+    if(k===0)b.classList.add('on');
+    b.addEventListener('click',()=>{go(k);arm();});
+    dotsBox.appendChild(b);
+  });
+  const dots=[...dotsBox.children];
+  function go(i){
+    idx=(i+imgs.length)%imgs.length;
+    imgs.forEach((im,k)=>im.classList.toggle('on',k===idx));
+    dots.forEach((d,k)=>d.classList.toggle('on',k===idx));
+  }
+  function arm(){clearInterval(timer);timer=setInterval(()=>go(idx+1),5000);}
+  $('#wsPrev').addEventListener('click',()=>{go(idx-1);arm();});
+  $('#wsNext').addEventListener('click',()=>{go(idx+1);arm();});
+  arm();
 })();
 
 /* ============ Hero slider ============ */

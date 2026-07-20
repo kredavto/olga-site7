@@ -239,7 +239,7 @@ const STATS = [
   { value: "1,2 млрд ₽", label: "Выдано займов под залог авто" },
   { value: "3 520", label: "Автомобилей принято в залог" },
   { value: "60 минут", label: "Среднее время выдачи денег" },
-  { value: "97%", label: "Заявок получают одобрение" },
+  { value: "95%", label: "Заявок получают одобрение" },
   { value: "5 млн ₽", label: "Максимальная сумма займа" },
   { value: "6%", label: "Минимальная ставка в месяц" },
 ];
@@ -287,7 +287,7 @@ export function InvestSection() {
       <div className="container max-w-3xl">
         <Reveal className="mb-4 text-center">
           <p className="eyebrow mb-3 flex items-center justify-center gap-3">
-            <Sparkles size={14} /> Капиталу — работу
+            <Sparkles size={14} /> Создай себе источник пассивного дохода
           </p>
           <WordReveal as="h2" text="Условия для инвестирования" className="display text-3xl lg:text-4xl" />
         </Reveal>

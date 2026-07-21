@@ -59,6 +59,14 @@ export function PageLoader() {
               alt="«ФИНДРАЙВ» — займы под залог автомобилей"
               className="w-72 sm:w-80 lg:w-96 h-auto drop-shadow-[0_0_40px_rgba(226,182,79,0.45)]"
             />
+            <motion.p
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="mt-4 text-center font-heading text-sm sm:text-base font-medium uppercase tracking-[0.32em] gold-text-gradient"
+            >
+              Будь первым у цели
+            </motion.p>
           </motion.div>
           <div className="mt-10 h-px w-56 overflow-hidden bg-white/10 rounded-full">
             <div

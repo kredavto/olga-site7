@@ -191,7 +191,7 @@ const FEATURES = [
   { icon: CarFront, title: "Авто остаётся у вас", value: "Автомобиль ваш", desc: "Продолжайте пользоваться машиной" },
   { icon: Timer, title: "Моментальное решение", value: "10 минут", desc: "Предварительное решение онлайн по сканам документов" },
   { icon: BadgePercent, title: "Низкая ставка", value: "от 6%/мес", desc: "Выгоднее, чем в большинстве МФО" },
-  { icon: FileText, title: "Минимум документов", value: "3 документа", desc: "Паспорт, ПТС, СТС — больше ничего не нужно" },
+  { icon: FileText, title: "Минимум документов", value: "2 документа", desc: "Паспорт, ПТС — больше ничего не нужно" },
   { icon: Undo2, title: "Досрочное погашение", value: "Без штрафов", desc: "Закрывайте заём по договорённости" },
 ];
 
@@ -295,8 +295,9 @@ export function InvestSection() {
         <Reveal delay={0.1}>
           <p className="mx-auto mb-7 max-w-2xl text-center text-lg leading-relaxed text-[#c6c5c1]">
             Привлекаем инвестиции под{" "}
-            <span className="display text-gold">24% годовых</span> с ежемесячной выплатой
-            процентов.
+            <span className="display text-gold">24% годовых</span>
+            <br />
+            с ежемесячной выплатой процентов.
           </p>
         </Reveal>
 
@@ -314,7 +315,7 @@ export function InvestSection() {
 const REQUIREMENTS = [
   { label: "Кому выдаём", value: "Гражданам РФ с постоянной регистрацией в Санкт-Петербурге и Ленинградской области" },
   { label: "Что принимаем в залог", value: "Легковые и грузовые авто не старше 20 лет" },
-  { label: "Документы", value: "Паспорт, ПТС, СТС" },
+  { label: "Документы", value: "Паспорт, ПТС" },
   { label: "Состояние авто", value: "На ходу, без серьёзных повреждений" },
   { label: "Регистрация авто", value: "Любой регион РФ" },
   { label: "Кредитная история", value: "Не имеет значения" },

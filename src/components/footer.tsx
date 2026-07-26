@@ -24,9 +24,8 @@ export const DOCUMENTS = [
   { label: "ССЫЛКИ ПАРТНЕРОВ", href: "/documents/ukazanie-cb-ssylki-2.docx" },
   { label: "Уведомление клиентам о смене наименования", href: "/documents/rekvizity-dlya-kontragentov.docx" },
   { label: "Структура собственности", href: "/documents/document-6.pdf" },
-  { label: "Устав ООО МКК «ГосАвтоФинанс»", href: "/documents/document-7.pdf" },
+  { label: "Устав", href: "/documents/document-7.pdf" },
   { label: "Выписка из ЕГРЮЛ", href: "/documents/vypiska-egrul.pdf" },
-  { label: "Устав ООО МКК «ГосАвтоФинанс» (скан)", href: "/documents/ustav-gosavtofinans.tif" },
 ];
 
 export function Footer() {

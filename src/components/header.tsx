@@ -11,7 +11,8 @@ const NAV = [
   { label: "Заёмщикам", id: "features" },
   { label: "Инвесторам", id: "invest" },
   { label: "Партнёрская программа", id: "partners" },
-  { label: "О компании", id: "faq" },
+  { label: "О компании", id: "stats" },
+  { label: "Вопросы", id: "faq" },
 ] as const;
 
 export function Header() {

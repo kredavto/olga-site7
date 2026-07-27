@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
 import { AuthProvider } from "@/lib/auth-context";
 import { CursorGlow, PageLoader, SmoothScroll } from "@/components/chrome";
+import { ChatWidget } from "@/components/chat-widget";
 
 export function Providers({ children }: { children: ReactNode }) {
   const [queryClient] = useState(() => new QueryClient());
@@ -16,6 +17,7 @@ export function Providers({ children }: { children: ReactNode }) {
           <PageLoader />
           <CursorGlow />
           {children}
+          <ChatWidget />
           <Toaster
             position="top-center"
             theme="dark"

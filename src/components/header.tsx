@@ -28,6 +28,11 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const openChat = () => {
+    setOpen(false);
+    window.dispatchEvent(new Event("findrive:open-chat"));
+  };
+
   const scrollTo = (id: string) => {
     setOpen(false);
     if (pathname !== "/") {
@@ -62,15 +67,13 @@ export function Header() {
               <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-[#e2b64f] to-transparent transition-all duration-500 group-hover:w-full" />
             </button>
           ))}
-          <a
-            href="https://wa.me/79219888880"
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onClick={openChat}
             className="group relative py-2 font-medium text-[1.05rem] text-[#c6c5c1] transition-colors duration-300 hover:text-[#f0cd7a]"
           >
             Чат
             <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-[#e2b64f] to-transparent transition-all duration-500 group-hover:w-full" />
-          </a>
+          </button>
         </nav>
 
         <div className="hidden md:block shrink-0">
@@ -111,14 +114,12 @@ export function Header() {
                 {item.label}
               </button>
             ))}
-            <a
-              href="https://wa.me/79219888880"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={openChat}
               className="block w-full rounded-xl px-3 py-3 text-left text-sm font-medium text-[#d6d5d1] transition-colors hover:bg-white/5 hover:text-[#f0cd7a]"
             >
               Чат
-            </a>
+            </button>
             <div className="pt-2">
               <button
                 onClick={() => {

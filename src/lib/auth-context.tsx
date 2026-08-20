@@ -43,6 +43,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .select("full_name, role, company, inn, phone")
       .eq("user_id", userId)
       .single();
+
+    // профиль ещё не создан (вход по ссылке из письма) — заполняем из данных регистрации
+    if (!data) {
+      const { data: authData } = await supabase.auth.getUser();
+      const meta = authData.user?.user_metadata ?? {};
+      if (meta.full_name || meta.phone) {
+        const { data: created } = await supabase
+          .from("profiles")
+          .upsert({
+            user_id: userId,
+            full_name: meta.full_name ?? null,
+            phone: meta.phone ?? null,
+            role: "borrower",
+          })
+          .select("full_name, role, company, inn, phone")
+          .single();
+        setProfile(created ?? null);
+        return;
+      }
+    }
+
     setProfile(data);
   };
 

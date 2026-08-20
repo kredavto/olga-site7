@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, UserRound, X } from "lucide-react";
 import { Logo } from "./logo";
 import { Magnetic } from "./motion";
 
@@ -31,6 +31,11 @@ export function Header() {
   const openChat = () => {
     setOpen(false);
     window.dispatchEvent(new Event("findrive:open-chat"));
+  };
+
+  const openAccount = () => {
+    setOpen(false);
+    window.dispatchEvent(new Event("findrive:open-account"));
   };
 
   const scrollTo = (id: string) => {
@@ -76,7 +81,14 @@ export function Header() {
           </button>
         </nav>
 
-        <div className="hidden md:block shrink-0">
+        <div className="hidden md:flex shrink-0 items-center gap-3">
+          <button
+            onClick={openAccount}
+            className="btn-ghost flex h-11 items-center gap-2 px-5 text-sm"
+          >
+            <UserRound size={16} />
+            Личный кабинет
+          </button>
           <Magnetic>
             <button
               onClick={() => router.push("/register?role=borrower")}
@@ -119,6 +131,13 @@ export function Header() {
               className="block w-full rounded-xl px-3 py-3 text-left text-sm font-medium text-[#d6d5d1] transition-colors hover:bg-white/5 hover:text-[#f0cd7a]"
             >
               Чат
+            </button>
+            <button
+              onClick={openAccount}
+              className="flex w-full items-center gap-2 rounded-xl px-3 py-3 text-left text-sm font-medium text-[#d6d5d1] transition-colors hover:bg-white/5 hover:text-[#f0cd7a]"
+            >
+              <UserRound size={16} />
+              Личный кабинет
             </button>
             <div className="pt-2">
               <button

@@ -6,6 +6,7 @@ import { Toaster } from "sonner";
 import { AuthProvider } from "@/lib/auth-context";
 import { CursorGlow, PageLoader, SmoothScroll } from "@/components/chrome";
 import { ChatWidget } from "@/components/chat-widget";
+import { AccountModal } from "@/components/account-modal";
 
 export function Providers({ children }: { children: ReactNode }) {
   const [queryClient] = useState(() => new QueryClient());
@@ -18,6 +19,7 @@ export function Providers({ children }: { children: ReactNode }) {
           <CursorGlow />
           {children}
           <ChatWidget />
+          <AccountModal />
           <Toaster
             position="top-center"
             theme="dark"

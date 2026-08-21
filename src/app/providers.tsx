@@ -7,6 +7,7 @@ import { AuthProvider } from "@/lib/auth-context";
 import { CursorGlow, PageLoader, SmoothScroll } from "@/components/chrome";
 import { ChatWidget } from "@/components/chat-widget";
 import { AccountModal } from "@/components/account-modal";
+import { AuthRedirect } from "@/components/auth-redirect";
 
 export function Providers({ children }: { children: ReactNode }) {
   const [queryClient] = useState(() => new QueryClient());
@@ -20,6 +21,7 @@ export function Providers({ children }: { children: ReactNode }) {
           {children}
           <ChatWidget />
           <AccountModal />
+          <AuthRedirect />
           <Toaster
             position="top-center"
             theme="dark"

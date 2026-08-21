@@ -25,13 +25,23 @@ export function AccountModal() {
   const router = useRouter();
 
   useEffect(() => {
-    const openAccount = () => {
+    const openAccount = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (data.session) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("user_id", data.session.user.id)
+          .single();
+        router.push(profile?.role === "investor" ? "/dashboard/investor" : "/dashboard/borrower");
+        return;
+      }
       setStep("login");
       setOpen(true);
     };
     window.addEventListener("findrive:open-account", openAccount);
     return () => window.removeEventListener("findrive:open-account", openAccount);
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
@@ -79,10 +89,13 @@ export function AccountModal() {
 
     if (error) {
       const notRegistered = /signups not allowed|user not found/i.test(error.message);
+      const rateLimited = /rate limit/i.test(error.message);
       toast.error(mode === "login" ? "Не удалось войти" : "Ошибка регистрации", {
         description: notRegistered
           ? "Такая почта не зарегистрирована. Пройдите регистрацию."
-          : error.message,
+          : rateLimited
+            ? "Слишком много писем за короткое время. Попробуйте через час или воспользуйтесь ссылкой из уже полученного письма."
+            : error.message,
       });
       return;
     }

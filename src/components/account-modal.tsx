@@ -71,7 +71,8 @@ export function AccountModal() {
           mode === "register"
             ? { full_name: fullName.trim(), phone: phone.trim() }
             : undefined,
-        emailRedirectTo: typeof window !== "undefined" ? window.location.origin : undefined,
+        emailRedirectTo:
+          typeof window !== "undefined" ? `${window.location.origin}/auth/callback` : undefined,
       },
     });
     setLoading(false);

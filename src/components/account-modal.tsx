@@ -3,13 +3,13 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowLeft, Check, Loader2, X } from "lucide-react";
+import { ArrowLeft, Check, Loader2, MailCheck, X } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabase";
 import { Logo } from "./logo";
 
-/** login — вход по email, register — регистрация, code — ввод кода из письма */
-type Step = "login" | "register" | "code";
+/** login — вход по email, register — регистрация, sent — письмо отправлено */
+type Step = "login" | "register" | "sent";
 
 export function AccountModal() {
   const [open, setOpen] = useState(false);
@@ -20,7 +20,6 @@ export function AccountModal() {
   const [phone, setPhone] = useState("");
   const [fullName, setFullName] = useState("");
   const [consent, setConsent] = useState(false);
-  const [code, setCode] = useState("");
   const [returnStep, setReturnStep] = useState<Step>("login");
 
   const router = useRouter();
@@ -28,7 +27,6 @@ export function AccountModal() {
   useEffect(() => {
     const openAccount = () => {
       setStep("login");
-      setCode("");
       setOpen(true);
     };
     window.addEventListener("findrive:open-account", openAccount);
@@ -41,7 +39,7 @@ export function AccountModal() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  /** Отправка кода подтверждения на почту */
+  /** Отправка письма со ссылкой для входа */
   const sendCode = async (mode: "login" | "register") => {
     if (mode === "register") {
       if (!fullName.trim()) {
@@ -89,51 +87,10 @@ export function AccountModal() {
     }
 
     setReturnStep(mode);
-    setStep("code");
-    setCode("");
-    toast.success("Код отправлен", {
-      description: `Проверьте почту ${email.trim()} — мы отправили код подтверждения.`,
+    setStep("sent");
+    toast.success("Письмо отправлено", {
+      description: `Проверьте почту ${email.trim()} и перейдите по ссылке из письма.`,
     });
-  };
-
-  /** Проверка кода из письма */
-  const verifyCode = async () => {
-    const token = code.trim();
-    if (!token) {
-      toast.error("Ошибка", { description: "Введите код из письма" });
-      return;
-    }
-    setLoading(true);
-    const { data, error } = await supabase.auth.verifyOtp({
-      email: email.trim(),
-      token,
-      type: "email",
-    });
-    setLoading(false);
-
-    if (error || !data.user) {
-      toast.error("Неверный код", { description: "Проверьте код из письма и попробуйте снова" });
-      return;
-    }
-
-    if (returnStep === "register") {
-      await supabase.from("profiles").upsert({
-        user_id: data.user.id,
-        full_name: fullName.trim(),
-        phone: phone.trim(),
-        role: "borrower",
-      });
-    }
-
-    toast.success("Вход выполнен", { description: "Добро пожаловать!" });
-
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("user_id", data.user.id)
-      .single();
-    setOpen(false);
-    router.push(profile?.role === "investor" ? "/dashboard/investor" : "/dashboard/borrower");
   };
 
   const title =
@@ -141,14 +98,14 @@ export function AccountModal() {
       ? "Вход в личный кабинет"
       : step === "register"
         ? "Регистрация нового пользователя"
-        : "Подтверждение по электронной почте";
+        : "Письмо отправлено";
 
   const subtitle =
     step === "login"
-      ? "Введите электронную почту — мы пришлём код для входа"
+      ? "Введите электронную почту — мы пришлём ссылку для входа"
       : step === "register"
         ? "Заполните данные, чтобы создать аккаунт"
-        : `Код отправлен на ${email.trim() || "вашу почту"}`;
+        : `Ссылка для входа отправлена на ${email.trim() || "вашу почту"}`;
 
   return (
     <AnimatePresence>
@@ -267,52 +224,38 @@ export function AccountModal() {
                   </button>
                 )}
 
-                {step === "code" && (
-                  <div>
-                    <label className="lux-label" htmlFor="acc-code">
-                      Код подтверждения из письма
-                    </label>
-                    <input
-                      id="acc-code"
-                      className="lux-input text-center text-2xl tracking-[0.5em]"
-                      type="text"
-                      inputMode="numeric"
-                      autoComplete="one-time-code"
-                      maxLength={10}
-                      value={code}
-                      onChange={(e) => setCode(e.target.value)}
-                      onKeyDown={(e) => e.key === "Enter" && verifyCode()}
-                      placeholder="000000"
-                    />
+                {step === "sent" && (
+                  <div className="rounded-2xl border border-[#e2b64f]/25 bg-[#e2b64f]/[0.06] p-5 text-center">
+                    <MailCheck size={30} className="mx-auto mb-3 text-[#e2b64f]" />
+                    <p className="text-[1.05rem] leading-relaxed text-[#e6e5e1]">
+                      Откройте письмо и перейдите по ссылке — вход выполнится автоматически.
+                    </p>
                     <p className="mt-3 text-[0.95rem] leading-snug text-[#a5a4a0]">
                       Письмо приходит в течение минуты. Если письма нет — проверьте папку «Спам».
                     </p>
                   </div>
                 )}
 
-                <button
-                  className="btn-gold h-14 w-full text-base"
-                  disabled={loading}
-                  onClick={() => {
-                    if (step === "code") verifyCode();
-                    else sendCode(step);
-                  }}
-                >
-                  {loading ? (
-                    <span className="flex items-center justify-center gap-2">
-                      <Loader2 size={18} className="animate-spin" />
-                      Подождите...
-                    </span>
-                  ) : step === "login" ? (
-                    "Получить код на почту"
-                  ) : step === "register" ? (
-                    "Регистрация"
-                  ) : (
-                    "Подтвердить и войти"
-                  )}
-                </button>
+                {step !== "sent" && (
+                  <button
+                    className="btn-gold h-14 w-full text-base"
+                    disabled={loading}
+                    onClick={() => sendCode(step)}
+                  >
+                    {loading ? (
+                      <span className="flex items-center justify-center gap-2">
+                        <Loader2 size={18} className="animate-spin" />
+                        Подождите...
+                      </span>
+                    ) : step === "login" ? (
+                      "Получить ссылку для входа"
+                    ) : (
+                      "Регистрация"
+                    )}
+                  </button>
+                )}
 
-                {step === "code" ? (
+                {step === "sent" ? (
                   <div className="flex items-center justify-between gap-4 text-[1.02rem]">
                     <button
                       onClick={() => setStep(returnStep)}
@@ -325,7 +268,7 @@ export function AccountModal() {
                       onClick={() => sendCode(returnStep === "register" ? "register" : "login")}
                       className="font-medium text-[#e2b64f] transition-colors hover:text-[#f0cd7a] hover:underline"
                     >
-                      Отправить код ещё раз
+                      Отправить письмо ещё раз
                     </button>
                   </div>
                 ) : (

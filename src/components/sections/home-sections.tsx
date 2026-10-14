@@ -212,7 +212,7 @@ function CarSilhouette() {
 /* ==================================================================== */
 const FEATURES = [
   { icon: Banknote, title: "Сумма займа", value: "до 5 млн ₽", desc: "До 500 000 рублей для физических лиц, до 5 000 000 рублей для юридических лиц и ИП" },
-  { icon: CarFront, title: "Авто остаётся у вас", value: "Автомобиль ваш", desc: "Продолжайте пользоваться машиной" },
+  { icon: CarFront, title: "Авто остаётся у вас", value: "Автомобиль ваш", desc: "При заключении договора микрозайма под залог ПТС право собственности на транспортное средство остается за Заемщиком. Транспортное средство не передается на стоянку МКК и остается в пользовании Заемщика." },
   { icon: Timer, title: "Моментальное решение", value: "10 минут", desc: "Предварительное решение онлайн по сканам документов" },
   { icon: BadgePercent, title: "Низкая ставка", value: "от 6%/мес", desc: "Выгоднее, чем в большинстве МФО" },
   { icon: FileText, title: "Минимум документов", value: "2 документа", desc: "Паспорт, ПТС — больше ничего не нужно" },
@@ -232,7 +232,7 @@ export function Features() {
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {FEATURES.map((f, i) => (
-            <Reveal key={f.title} delay={i * 0.08}>
+            <Reveal key={f.title} delay={i * 0.08} className="h-full">
               <TiltCard max={5} className="rounded-2xl h-full">
                 <button
                   type="button"

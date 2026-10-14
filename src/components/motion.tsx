@@ -223,7 +223,7 @@ export function TiltCard({
   };
 
   return (
-    <div className="scene-3d">
+    <div className="scene-3d h-full">
       <div
         ref={ref}
         onMouseMove={onMove}

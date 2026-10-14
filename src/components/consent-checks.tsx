@@ -65,6 +65,19 @@ function Box({
   );
 }
 
+/** Обязательная информация о праве отказа от доп. услуг — рядом с каждой формой заявки. */
+export function RefundNotice({ className = "" }: { className?: string }) {
+  return (
+    <p
+      className={`rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-[0.85rem] leading-snug text-[#a5a4a0] ${className}`}
+    >
+      Заемщик имеет право отказаться от любой дополнительной услуги, работы или товара,
+      предложенных МКК, в течение 30 календарных дней со дня заключения договора с возвратом
+      уплаченных денежных средств в полном объеме.
+    </p>
+  );
+}
+
 /**
  * Три согласия перед кнопкой «Подать заявку».
  * `showErrors` подсвечивает пустые обязательные поля после попытки отправки.
@@ -115,6 +128,7 @@ export function ConsentChecks({
       <Box checked={value.marketing} onToggle={() => toggle("marketing")}>
         Я согласен на получение информационных и рекламных рассылок
       </Box>
+      <RefundNotice />
     </div>
   );
 }

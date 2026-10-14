@@ -17,6 +17,13 @@ import {
 import { LoanCalculator, InvestorCalculator } from "./calculators";
 import { CountUp, Magnetic, Reveal, TiltCard, WordReveal } from "@/components/motion";
 import {
+  CONSENTS_ERROR,
+  ConsentChecks,
+  EMPTY_CONSENTS,
+  hasRequiredConsents,
+} from "@/components/consent-checks";
+import { toast } from "sonner";
+import {
   Accordion,
   AccordionContent,
   AccordionItem,
@@ -28,6 +35,8 @@ import {
 /* ==================================================================== */
 export function Hero() {
   const [phone, setPhone] = useState("+7 ");
+  const [consents, setConsents] = useState(EMPTY_CONSENTS);
+  const [showConsentErrors, setShowConsentErrors] = useState(false);
   const router = useRouter();
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -40,8 +49,17 @@ export function Hero() {
   const textY = useTransform(scrollYProgress, [0, 1], ["0%", "14%"]);
   const fade = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
-  const submit = () =>
-    router.push(`/register?role=borrower${phone ? `&phone=${encodeURIComponent(phone)}` : ""}`);
+  const submit = () => {
+    if (!hasRequiredConsents(consents)) {
+      setShowConsentErrors(true);
+      toast.error("Нужно ваше согласие", { description: CONSENTS_ERROR });
+      return;
+    }
+    const params = new URLSearchParams({ role: "borrower" });
+    if (phone.trim()) params.set("phone", phone);
+    params.set("consent", consents.marketing ? "all" : "required");
+    router.push(`/register?${params.toString()}`);
+  };
 
   return (
     <section
@@ -88,6 +106,12 @@ export function Hero() {
           </Reveal>
 
           <Reveal delay={2.05} y={20}>
+            <ConsentChecks
+              value={consents}
+              onChange={setConsents}
+              showErrors={showConsentErrors}
+              className="mb-5 max-w-lg"
+            />
             <div className="mb-10 flex flex-col gap-3 sm:flex-row">
               <input
                 placeholder="Ваш телефон"

@@ -8,6 +8,12 @@ import { Upload } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { Logo } from "@/components/logo";
 import { Magnetic } from "@/components/motion";
+import {
+  CONSENTS_ERROR,
+  ConsentChecks,
+  hasRequiredConsents,
+  type Consents,
+} from "@/components/consent-checks";
 
 const LEAD_EMAIL = "findrive78@yandex.ru";
 const STORAGE_BUCKET = "documents";
@@ -23,6 +29,13 @@ function RegisterForm() {
     term: "",
   });
   const [files, setFiles] = useState<File[]>([]);
+  const consentParam = searchParams.get("consent");
+  const [consents, setConsents] = useState<Consents>({
+    personalData: Boolean(consentParam),
+    creditReport: Boolean(consentParam),
+    marketing: consentParam === "all",
+  });
+  const [showConsentErrors, setShowConsentErrors] = useState(false);
   const router = useRouter();
   const isPartner = searchParams.get("role") === "partner";
   const isInvestor = searchParams.get("role") === "investor";
@@ -46,6 +59,16 @@ function RegisterForm() {
       toast.error("Ошибка", { description: "Заполните имя и телефон" });
       return;
     }
+    if (!hasRequiredConsents(consents)) {
+      setShowConsentErrors(true);
+      toast.error("Нужно ваше согласие", { description: CONSENTS_ERROR });
+      return;
+    }
+    const consentsText = [
+      "обработка ПДн и Политика конфиденциальности — да",
+      "кредитный отчёт из БКИ — да",
+      `рассылки — ${consents.marketing ? "да" : "нет"}`,
+    ].join("; ");
     setSubmitting(true);
     try {
       // резервная копия файлов в хранилище (не блокирует отправку заявки)
@@ -86,6 +109,7 @@ function RegisterForm() {
                 : form.amount,
             email: form.email,
             fileUrls: isPartner || isInvestor ? [] : uploadedUrls,
+            consents: consentsText,
           },
         });
         sent = !error && !!data?.success;
@@ -108,6 +132,7 @@ function RegisterForm() {
                   Email: form.email || "—",
                   "Сумма инвестиций": form.amount || "—",
                   "Срок инвестиций": form.term || "—",
+                  Согласия: consentsText,
                 }
               : isPartner
               ? {
@@ -116,6 +141,7 @@ function RegisterForm() {
                   Имя: form.name,
                   Телефон: form.phone,
                   Email: form.email || "—",
+                  Согласия: consentsText,
                 }
               : {
                   _subject: "Новая заявка с сайта «ФИНДРАЙВ»",
@@ -125,6 +151,7 @@ function RegisterForm() {
                   Сумма: form.amount || "—",
                   Email: form.email || "—",
                   "Фото документов": uploadedUrls.length ? uploadedUrls.join("\n") : "не приложены",
+                  Согласия: consentsText,
                 },
           ),
         });
@@ -268,6 +295,13 @@ function RegisterForm() {
             )}
           </div>
           )}
+
+          <ConsentChecks
+            value={consents}
+            onChange={setConsents}
+            showErrors={showConsentErrors}
+            className="pt-1"
+          />
 
           <Magnetic className="block w-full pt-1" strength={0.1}>
             <button

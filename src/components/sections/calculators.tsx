@@ -3,7 +3,14 @@
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Slider } from "@/components/ui/slider";
+import { toast } from "sonner";
 import { AnimatedNumber, Magnetic } from "@/components/motion";
+import {
+  CONSENTS_ERROR,
+  ConsentChecks,
+  EMPTY_CONSENTS,
+  hasRequiredConsents,
+} from "@/components/consent-checks";
 
 const fmt = (n: number) => n.toLocaleString("ru-RU");
 
@@ -17,6 +24,17 @@ export function LoanCalculator({ className, id }: { className?: string; id?: str
   const [amount, setAmount] = useState(500_000);
   const [term, setTerm] = useState(12);
   const [rate, setRate] = useState(6);
+  const [consents, setConsents] = useState(EMPTY_CONSENTS);
+  const [showConsentErrors, setShowConsentErrors] = useState(false);
+
+  const apply = () => {
+    if (!hasRequiredConsents(consents)) {
+      setShowConsentErrors(true);
+      toast.error("Нужно ваше согласие", { description: CONSENTS_ERROR });
+      return;
+    }
+    router.push(`/register?role=borrower&consent=${consents.marketing ? "all" : "required"}`);
+  };
 
   const { monthly, probability } = useMemo(() => {
     const r = rate / 100;
@@ -99,11 +117,15 @@ export function LoanCalculator({ className, id }: { className?: string; id?: str
         </div>
       </div>
 
-      <Magnetic className="mt-9 block w-full" strength={0.12}>
-        <button
-          onClick={() => router.push("/register?role=borrower")}
-          className="btn-gold glow-pulse h-14 w-full text-base"
-        >
+      <ConsentChecks
+        value={consents}
+        onChange={setConsents}
+        showErrors={showConsentErrors}
+        className="mt-7"
+      />
+
+      <Magnetic className="mt-6 block w-full" strength={0.12}>
+        <button onClick={apply} className="btn-gold glow-pulse h-14 w-full text-base">
           Подать заявку на заём
         </button>
       </Magnetic>

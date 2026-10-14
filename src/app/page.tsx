@@ -1,6 +1,7 @@
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import {
+  BorrowerInfo,
   Faq,
   Features,
   Hero,
@@ -22,6 +23,7 @@ export default function HomePage() {
         <Requirements />
         <Partners />
         <Faq />
+        <BorrowerInfo />
       </main>
       <Footer />
     </div>

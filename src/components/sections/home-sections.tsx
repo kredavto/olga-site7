@@ -8,10 +8,15 @@ import {
   BadgePercent,
   CarFront,
   FileText,
+  Gauge,
   Handshake,
+  PhoneCall,
+  Scale,
+  ShieldAlert,
   ShieldCheck,
   Sparkles,
   Timer,
+  TriangleAlert,
   Undo2,
 } from "lucide-react";
 import { LoanCalculator, InvestorCalculator } from "./calculators";
@@ -493,6 +498,148 @@ export function Faq() {
             ))}
           </Accordion>
         </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/* ==================================================================== */
+/* BORROWER INFO — обязательная информация для заемщиков                 */
+/* ==================================================================== */
+const SITE_ADDRESS = "olga-site8.vercel.app";
+
+const BORROWER_INFO = [
+  {
+    icon: Scale,
+    title: "Памятка по ограничению задолженности",
+    tag: "Требование 151-ФЗ",
+    lead: "Вниманию заемщиков:",
+    body: (
+      <>
+        Законодательством РФ установлены жесткие ограничения предельной задолженности. Общая
+        сумма всех начисленных процентов, неустоек (штрафов, пеней) и иных мер ответственности
+        по договору микрозайма не может превышать 1,3-кратного размера суммы предоставленного
+        займа (130% от суммы займа). После достижения этого предела начисление процентов и
+        штрафов полностью прекращается.
+      </>
+    ),
+  },
+  {
+    icon: TriangleAlert,
+    title: "Предупреждение о рисках залога и потере автомобиля",
+    lead: "Предупреждение о рисках:",
+    body: (
+      <>
+        Оформляя микрозайм под залог транспортного средства (ПТС), заемщик несет риск утраты
+        права собственности на автомобиль в случае злостного неисполнения обязательств по
+        договору. Взыскание на заложенное имущество обращается в судебном или внесудебном
+        порядке в соответствии с действующим законодательством РФ. Пожалуйста, соразмеряйте
+        долговую нагрузку со своими финансовыми возможностями.
+      </>
+    ),
+  },
+  {
+    icon: ShieldAlert,
+    title: "Информация о защите от мошенничества",
+    tag: "Антифишинг",
+    lead: "Внимание!",
+    body: (
+      <>
+        Оформляйте займы только на данном официальном сайте{" "}
+        <a
+          href={`https://${SITE_ADDRESS}`}
+          className="text-[#e2b64f] underline underline-offset-2 transition-colors hover:text-[#f0cd7a]"
+        >
+          {SITE_ADDRESS}
+        </a>
+        . Наша компания не сотрудничает с нелегальными посредниками и не просит переводить
+        предоплату за &laquo;одобрение&raquo; займа на личные банковские карты.
+      </>
+    ),
+  },
+  {
+    icon: PhoneCall,
+    title: "Права заемщика при просрочке и правила работы коллекторов",
+    tag: "230-ФЗ",
+    lead: null,
+    body: (
+      <>
+        В случае возникновения просроченной задолженности взаимодействие с Заемщиком
+        осуществляется в строгом соответствии с Федеральным законом № 230-ФЗ. Наша компания
+        гарантирует соблюдение лимитов на количество звонков и СМС-сообщений. Заемщик имеет
+        право направить в адрес МКК заявление об осуществлении взаимодействия через адвоката
+        или заявление об отказе от взаимодействия (по истечении 4 месяцев с даты возникновения
+        просрочки).
+      </>
+    ),
+  },
+  {
+    icon: Gauge,
+    title: "Порядок расчета Показателя долговой нагрузки (ПДН)",
+    lead: null,
+    body: (
+      <>
+        Перед выдачей микрозайма ООО МКК &laquo;ФИНДРАЙВ&raquo; обязана рассчитать ваш
+        Показатель долговой нагрузки (ПДН). Если на оплату всех ваших кредитов и займов уходит
+        более 50% вашего ежемесячного дохода, в выдаче займа может быть отказано, либо условия
+        займа могут быть изменены в соответствии с макропруденциальными лимитами Банка России.
+      </>
+    ),
+  },
+] as const;
+
+export function BorrowerInfo() {
+  return (
+    <section
+      id="borrower-info"
+      className="scroll-mt-28 relative py-28 lg:py-36 bg-[#0a0a0c]"
+    >
+      <div className="pointer-events-none absolute inset-x-0 top-0 hairline" aria-hidden />
+      <div className="container max-w-5xl">
+        <Reveal className="mb-16 text-center">
+          <p className="eyebrow mb-4 flex items-center justify-center gap-3">
+            <ShieldCheck size={14} /> Прозрачность и защита прав
+          </p>
+          <WordReveal
+            as="h2"
+            text="Важная информация для заемщиков"
+            className="display text-4xl lg:text-5xl"
+          />
+        </Reveal>
+
+        <div className="grid gap-5 md:grid-cols-2">
+          {BORROWER_INFO.map((item, i) => (
+            <Reveal
+              key={item.title}
+              delay={i * 0.06}
+              className={`h-full ${i === BORROWER_INFO.length - 1 ? "md:col-span-2" : ""}`}
+            >
+              <article className="lux-card reflect flex h-full flex-col rounded-2xl p-7 lg:p-8">
+                <div className="mb-5 flex items-start gap-4">
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-[#e2b64f]/30 bg-[#e2b64f]/10 text-[#e2b64f]">
+                    <item.icon size={22} />
+                  </span>
+                  <div className="min-w-0">
+                    {"tag" in item && item.tag && (
+                      <p className="mb-1.5 text-[0.78rem] font-medium uppercase tracking-[0.16em] text-[#e2b64f]">
+                        {item.tag}
+                      </p>
+                    )}
+                    <h3 className="display text-lg lg:text-xl leading-snug text-[#f4f2ee] [text-wrap:balance]">
+                      {item.title}
+                    </h3>
+                  </div>
+                </div>
+                <p className="text-[1rem] leading-relaxed text-[#c6c5c1]">
+                  {item.lead && (
+                    <span className="font-semibold text-[#f4f2ee]">{item.lead} </span>
+                  )}
+                  {item.body}
+                </p>
+              </article>
+            </Reveal>
+          ))}
+        </div>
       </div>
     </section>
   );

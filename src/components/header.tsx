@@ -59,14 +59,14 @@ export function Header() {
           scrolled ? "glass-strong shadow-[0_18px_50px_-20px_rgba(0,0,0,0.8)]" : "bg-transparent border border-transparent"
         }`}
       >
-        <Logo size="sm" />
+        <Logo size="sm" className="shrink-0" />
 
-        <nav className="hidden md:flex flex-1 items-center justify-center gap-8">
+        <nav className="hidden xl:flex flex-1 items-center justify-center gap-4 lg:gap-6 2xl:gap-8">
           {NAV.map((item) => (
             <button
               key={item.id}
               onClick={() => scrollTo(item.id)}
-              className="group relative py-2 font-medium text-[1.05rem] text-[#c6c5c1] transition-colors duration-300 hover:text-[#f0cd7a]"
+              className="group relative whitespace-nowrap py-2 font-medium text-[0.95rem] xl:text-[1.05rem] text-[#c6c5c1] transition-colors duration-300 hover:text-[#f0cd7a]"
             >
               {item.label}
               <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-[#e2b64f] to-transparent transition-all duration-500 group-hover:w-full" />
@@ -74,25 +74,27 @@ export function Header() {
           ))}
           <button
             onClick={openChat}
-            className="group relative py-2 font-medium text-[1.05rem] text-[#c6c5c1] transition-colors duration-300 hover:text-[#f0cd7a]"
+            className="group relative whitespace-nowrap py-2 font-medium text-[0.95rem] xl:text-[1.05rem] text-[#c6c5c1] transition-colors duration-300 hover:text-[#f0cd7a]"
           >
             Чат
             <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-[#e2b64f] to-transparent transition-all duration-500 group-hover:w-full" />
           </button>
         </nav>
 
-        <div className="hidden md:flex shrink-0 items-center gap-3">
+        <div className="hidden xl:flex shrink-0 items-center gap-3">
           <button
             onClick={openAccount}
-            className="btn-ghost flex h-11 items-center gap-2 px-5 text-sm"
+            aria-label="Личный кабинет"
+            title="Личный кабинет"
+            className="btn-ghost flex h-11 items-center gap-2 whitespace-nowrap px-3.5 text-sm 2xl:px-5"
           >
             <UserRound size={16} />
-            Личный кабинет
+            <span className="hidden 2xl:inline">Личный кабинет</span>
           </button>
           <Magnetic>
             <button
               onClick={() => router.push("/register?role=borrower")}
-              className="btn-gold h-11 px-6 text-sm"
+              className="btn-gold h-11 whitespace-nowrap px-6 text-sm"
             >
               Подать заявку
             </button>
@@ -100,7 +102,7 @@ export function Header() {
         </div>
 
         <button
-          className="md:hidden ml-auto flex h-10 w-10 items-center justify-center rounded-xl border border-white/10"
+          className="xl:hidden ml-auto flex h-10 w-10 items-center justify-center rounded-xl border border-white/10"
           onClick={() => setOpen(!open)}
           aria-label="Меню"
         >
@@ -115,7 +117,7 @@ export function Header() {
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             exit={{ opacity: 0, y: -12, filter: "blur(6px)" }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="md:hidden mx-auto mt-2 max-w-7xl glass-strong rounded-2xl p-4 space-y-1"
+            className="xl:hidden mx-auto mt-2 max-w-7xl glass-strong rounded-2xl p-4 space-y-1"
           >
             {NAV.map((item) => (
               <button

@@ -14,6 +14,16 @@ import {
 
 const fmt = (n: number) => n.toLocaleString("ru-RU");
 
+/** Оговорка под каждым калькулятором сайта */
+function CalculatorNote({ className = "" }: { className?: string }) {
+  return (
+    <p className={`text-center text-[0.8rem] leading-snug text-[#a5a4a0] ${className}`}>
+      Калькулятор производит предварительный расчет, финальные условия определяются
+      индивидуальным договором.
+    </p>
+  );
+}
+
 /* ------------------------------------------------------------------ */
 /* Loan calculator — identical math & ranges, glass luxury UI           */
 /* amount 50 000–5 000 000 step 50 000; term 1–12; rate 6–8 step 0.5   */
@@ -129,6 +139,8 @@ export function LoanCalculator({ className, id }: { className?: string; id?: str
           Подать заявку на заём
         </button>
       </Magnetic>
+
+      <CalculatorNote className="mt-4" />
     </div>
   );
 }
@@ -217,6 +229,8 @@ export function InvestorCalculator() {
           Инвестировать
         </button>
       </Magnetic>
+
+      <CalculatorNote className="mt-3" />
     </div>
   );
 }

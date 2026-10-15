@@ -15,7 +15,6 @@ export const DOCUMENTS = [
   { label: "Согласие на обработку персональных данных", href: "/documents/soglasie-obrabotka-pdn.docx" },
   { label: "Положение о порядке обработки и защиты персональных данных", href: "/documents/polozhenie-o-pdn.docx" },
   { label: "Карта партнёра ООО МКК «ФИНДРАЙВ»", href: "/documents/karta-partnera.docx" },
-  { label: "Правила предоставления займов", href: "/documents/pravila-predostavleniya-zaymov.docx" },
   { label: "Правила предоставления микрозаймов", href: "/documents/pravila-predostavleniya-mikrozaymov.docx" },
   { label: "Общие условия потребительского займа", href: "/documents/obshchie-usloviya-potrebitelskogo-zayma.docx" },
   { label: "Выписка из реестра МФО ЦБ РФ", href: "/documents/document-1.pdf" },

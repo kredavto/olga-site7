@@ -4,6 +4,7 @@ import { type ReactNode, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
 import { AuthProvider } from "@/lib/auth-context";
+import { ContentProvider } from "@/lib/site-content";
 import { CursorGlow, PageLoader, SmoothScroll } from "@/components/chrome";
 import { ChatWidget } from "@/components/chat-widget";
 import { AccountModal } from "@/components/account-modal";
@@ -15,6 +16,7 @@ export function Providers({ children }: { children: ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
+        <ContentProvider>
         <SmoothScroll>
           <PageLoader />
           <CursorGlow />
@@ -35,6 +37,7 @@ export function Providers({ children }: { children: ReactNode }) {
             }}
           />
         </SmoothScroll>
+        </ContentProvider>
       </AuthProvider>
     </QueryClientProvider>
   );

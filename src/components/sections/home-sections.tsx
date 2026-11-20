@@ -28,6 +28,7 @@ import {
   hasRequiredConsents,
 } from "@/components/consent-checks";
 import { toast } from "sonner";
+import { useContent } from "@/lib/site-content";
 import {
   Accordion,
   AccordionContent,
@@ -39,6 +40,7 @@ import {
 /* HERO — full-screen cinematic composition with layered parallax        */
 /* ==================================================================== */
 export function Hero() {
+  const t = useContent();
   const [phone, setPhone] = useState("+7 ");
   const [consents, setConsents] = useState(EMPTY_CONSENTS);
   const [showConsentErrors, setShowConsentErrors] = useState(false);
@@ -94,7 +96,7 @@ export function Hero() {
           <Reveal delay={1.3} y={16}>
             <p className="eyebrow mb-8 flex items-center gap-3">
               <span className="inline-block h-px w-10 bg-[#e2b64f]/60" />
-              Деньги за 1 час
+              {t["hero.eyebrow"]}
             </p>
           </Reveal>
 
@@ -104,9 +106,8 @@ export function Hero() {
           </h1>
 
           <Reveal delay={1.9} y={20}>
-            <p className="mb-10 max-w-lg text-lg leading-relaxed text-[#c6c5c1]">
-              Получите деньги под залог автомобиля со ставкой от 6% в месяц. Автомобиль
-              остаётся у вас. Предварительное решение за 10 минут онлайн.
+            <p className="mb-10 max-w-lg whitespace-pre-line text-lg leading-relaxed text-[#c6c5c1]">
+              {t["hero.description"]}
             </p>
           </Reveal>
 
@@ -225,6 +226,7 @@ const FEATURES = [
 ];
 
 export function Features() {
+  const t = useContent();
   const router = useRouter();
   return (
     <section id="features" className="scroll-mt-28 relative py-28 lg:py-36 bg-[#0a0a0c]">
@@ -249,8 +251,12 @@ export function Features() {
                     className="mb-6 text-[#e2b64f] drop-shadow-[0_0_10px_rgba(226,182,79,0.6)] transition-transform duration-500 group-hover:scale-110"
                   />
                   <p className="mb-1 text-[1.05rem] text-[#c6c5c1]">{f.title}</p>
-                  <p className="display mb-3 text-2xl lg:text-[1.7rem] text-gold">{f.value}</p>
-                  <p className="text-[1.05rem] leading-relaxed text-[#c6c5c1]">{f.desc}</p>
+                  <p className="display mb-3 text-2xl lg:text-[1.7rem] text-gold">
+                    {t[`features.${i}.value`] ?? f.value}
+                  </p>
+                  <p className="whitespace-pre-line text-[1.05rem] leading-relaxed text-[#c6c5c1]">
+                    {t[`features.${i}.desc`] ?? f.desc}
+                  </p>
                 </button>
               </TiltCard>
             </Reveal>
@@ -274,6 +280,7 @@ const STATS = [
 ];
 
 export function Stats() {
+  const t = useContent();
   const router = useRouter();
   return (
     <section id="stats" className="scroll-mt-28 relative overflow-hidden py-28 lg:py-36">
@@ -286,17 +293,17 @@ export function Stats() {
 
         <div className="grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
           {STATS.map((s, i) => (
-            <Reveal key={s.label} delay={i * 0.08}>
+            <Reveal key={i} delay={i * 0.08}>
               <button
                 type="button"
                 onClick={() => router.push("/register?role=borrower")}
                 className="group w-full cursor-pointer text-center transition-transform duration-500 hover:-translate-y-1.5"
               >
                 <p className="display mb-3 text-5xl lg:text-6xl gold-text-gradient drop-shadow-[0_0_28px_rgba(226,182,79,0.25)]">
-                  <CountUp value={s.value} />
+                  <CountUp value={t[`stats.${i}.value`] ?? s.value} />
                 </p>
                 <div className="mx-auto mb-3 h-px w-10 bg-[#e2b64f]/30 transition-all duration-500 group-hover:w-20 group-hover:bg-[#e2b64f]/60" />
-                <p className="text-[1.05rem] text-[#c6c5c1]">{s.label}</p>
+                <p className="text-[1.05rem] text-[#c6c5c1]">{t[`stats.${i}.label`] ?? s.label}</p>
               </button>
             </Reveal>
           ))}
@@ -310,13 +317,14 @@ export function Stats() {
 /* INVEST — «Условия для инвестирования»                                 */
 /* ==================================================================== */
 export function InvestSection() {
+  const t = useContent();
   return (
     <section id="invest" className="scroll-mt-28 relative py-16 lg:py-20 bg-[#0a0a0c]">
       <div className="pointer-events-none absolute inset-x-0 top-0 hairline" aria-hidden />
       <div className="container max-w-3xl">
         <Reveal className="mb-4 text-center">
           <p className="eyebrow mb-3 flex items-center justify-center gap-3">
-            <Sparkles size={14} /> Создай себе источник пассивного дохода
+            <Sparkles size={14} /> {t["invest.eyebrow"]}
           </p>
           <WordReveal as="h2" text="Условия для инвестирования" className="display text-3xl lg:text-4xl" />
         </Reveal>
@@ -351,6 +359,7 @@ const REQUIREMENTS = [
 ];
 
 export function Requirements() {
+  const t = useContent();
   const router = useRouter();
   return (
     <section id="requirements" className="scroll-mt-28 relative py-28 lg:py-36">
@@ -375,7 +384,7 @@ export function Requirements() {
                     {r.label}
                   </p>
                   <p className="display text-lg lg:text-xl text-[#f4f2ee] transition-colors duration-300 group-hover:text-[#f0cd7a]">
-                    {r.value}
+                    {t[`requirements.${i}`] ?? r.value}
                   </p>
                 </div>
                 <span className="text-[#e2b64f]/40 transition-all duration-500 group-hover:translate-x-1 group-hover:text-[#e2b64f]">
@@ -394,6 +403,7 @@ export function Requirements() {
 /* PARTNERS — «Партнёрская программа»                                    */
 /* ==================================================================== */
 export function Partners() {
+  const t = useContent();
   const router = useRouter();
   return (
     <section id="partners" className="scroll-mt-28 relative py-28 lg:py-36 bg-[#0a0a0c]">
@@ -412,9 +422,8 @@ export function Partners() {
                 <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-[#e2b64f]/30 bg-[#e2b64f]/10 text-[#e2b64f] shadow-[0_0_24px_rgba(226,182,79,0.2)]">
                   <Handshake size={26} />
                 </span>
-                <p className="text-lg lg:text-xl leading-relaxed text-[#d6d5d1]">
-                  Стань участником нашей партнёрской программы и зарабатывай вместе с нами на
-                  постоянной основе!
+                <p className="whitespace-pre-line text-lg lg:text-xl leading-relaxed text-[#d6d5d1]">
+                  {t["partners.intro"]}
                 </p>
               </div>
 
@@ -424,12 +433,8 @@ export function Partners() {
                 <BadgePercent size={24} className="mt-1 shrink-0 text-[#e2b64f]" />
                 <p className="text-lg lg:text-xl leading-relaxed">
                   <span className="text-[#c6c5c1]">Наши условия — </span>
-                  <span className="display text-gold">платим 5%</span>
-                  <span className="text-[#c6c5c1]">
-                    {" "}
-                    от сделки за каждого привлечённого вами инвестора или заёмщика. Работаем
-                    официально в рамках Агентского договора.
-                  </span>
+                  <span className="display text-gold">{t["partners.reward"]}</span>
+                  <span className="text-[#c6c5c1]"> {t["partners.terms"]}</span>
                 </p>
               </div>
 
@@ -472,6 +477,7 @@ const FAQ_ITEMS = [
 ];
 
 export function Faq() {
+  const t = useContent();
   return (
     <section id="faq" className="scroll-mt-28 relative py-28 lg:py-36">
       <div className="container max-w-3xl">
@@ -489,10 +495,10 @@ export function Faq() {
                 className="lux-card rounded-2xl px-7 data-[state=open]:border-[#e2b64f]/30"
               >
                 <AccordionTrigger className="display text-lg lg:text-xl">
-                  {item.q}
+                  {t[`faq.${i}.q`] ?? item.q}
                 </AccordionTrigger>
-                <AccordionContent className="text-base lg:text-lg leading-relaxed text-[#c6c5c1]">
-                  {item.a}
+                <AccordionContent className="whitespace-pre-line text-base lg:text-lg leading-relaxed text-[#c6c5c1]">
+                  {t[`faq.${i}.a`] ?? item.a}
                 </AccordionContent>
               </AccordionItem>
             ))}
@@ -509,86 +515,37 @@ export function Faq() {
 const SITE_ADDRESS = "olga-site8.vercel.app";
 
 const BORROWER_INFO = [
-  {
-    icon: Scale,
-    title: "Памятка по ограничению задолженности",
-    tag: "Требование 151-ФЗ",
-    lead: "Вниманию заемщиков:",
-    body: (
-      <>
-        Законодательством РФ установлены жесткие ограничения предельной задолженности. Общая
-        сумма всех начисленных процентов, неустоек (штрафов, пеней) и иных мер ответственности
-        по договору микрозайма не может превышать 1,3-кратного размера суммы предоставленного
-        займа (130% от суммы займа). После достижения этого предела начисление процентов и
-        штрафов полностью прекращается.
-      </>
-    ),
-  },
-  {
-    icon: TriangleAlert,
-    title: "Предупреждение о рисках залога и потере автомобиля",
-    lead: "Предупреждение о рисках:",
-    body: (
-      <>
-        Оформляя микрозайм под залог транспортного средства (ПТС), заемщик несет риск утраты
-        права собственности на автомобиль в случае злостного неисполнения обязательств по
-        договору. Взыскание на заложенное имущество обращается в судебном или внесудебном
-        порядке в соответствии с действующим законодательством РФ. Пожалуйста, соразмеряйте
-        долговую нагрузку со своими финансовыми возможностями.
-      </>
-    ),
-  },
-  {
-    icon: ShieldAlert,
-    title: "Информация о защите от мошенничества",
-    tag: "Антифишинг",
-    lead: "Внимание!",
-    body: (
-      <>
-        Оформляйте займы только на данном официальном сайте{" "}
-        <a
-          href={`https://${SITE_ADDRESS}`}
-          className="text-[#e2b64f] underline underline-offset-2 transition-colors hover:text-[#f0cd7a]"
-        >
-          {SITE_ADDRESS}
-        </a>
-        . Наша компания не сотрудничает с нелегальными посредниками и не просит переводить
-        предоплату за &laquo;одобрение&raquo; займа на личные банковские карты.
-      </>
-    ),
-  },
-  {
-    icon: PhoneCall,
-    title: "Права заемщика при просрочке и правила работы коллекторов",
-    tag: "230-ФЗ",
-    lead: null,
-    body: (
-      <>
-        В случае возникновения просроченной задолженности взаимодействие с Заемщиком
-        осуществляется в строгом соответствии с Федеральным законом № 230-ФЗ. Наша компания
-        гарантирует соблюдение лимитов на количество звонков и СМС-сообщений. Заемщик имеет
-        право направить в адрес МКК заявление об осуществлении взаимодействия через адвоката
-        или заявление об отказе от взаимодействия (по истечении 4 месяцев с даты возникновения
-        просрочки).
-      </>
-    ),
-  },
-  {
-    icon: Gauge,
-    title: "Порядок расчета Показателя долговой нагрузки (ПДН)",
-    lead: null,
-    body: (
-      <>
-        Перед выдачей микрозайма ООО МКК &laquo;ФИНДРАЙВ&raquo; обязана рассчитать ваш
-        Показатель долговой нагрузки (ПДН). Если на оплату всех ваших кредитов и займов уходит
-        более 50% вашего ежемесячного дохода, в выдаче займа может быть отказано, либо условия
-        займа могут быть изменены в соответствии с макропруденциальными лимитами Банка России.
-      </>
-    ),
-  },
+  { icon: Scale, title: "Памятка по ограничению задолженности", tag: "Требование 151-ФЗ", lead: "Вниманию заемщиков:" },
+  { icon: TriangleAlert, title: "Предупреждение о рисках залога и потере автомобиля", tag: null, lead: "Предупреждение о рисках:" },
+  { icon: ShieldAlert, title: "Информация о защите от мошенничества", tag: "Антифишинг", lead: "Внимание!" },
+  { icon: PhoneCall, title: "Права заемщика при просрочке и правила работы коллекторов", tag: "230-ФЗ", lead: null },
+  { icon: Gauge, title: "Порядок расчета Показателя долговой нагрузки (ПДН)", tag: null, lead: null },
 ] as const;
 
+/** Текст абзаца; метка {сайт} превращается в ссылку на официальный сайт. */
+function InfoText({ text }: { text: string }) {
+  const parts = text.split("{сайт}");
+  return (
+    <>
+      {parts.map((part, idx) => (
+        <span key={idx}>
+          {part}
+          {idx < parts.length - 1 && (
+            <a
+              href={`https://${SITE_ADDRESS}`}
+              className="text-[#e2b64f] underline underline-offset-2 transition-colors hover:text-[#f0cd7a]"
+            >
+              {SITE_ADDRESS}
+            </a>
+          )}
+        </span>
+      ))}
+    </>
+  );
+}
+
 export function BorrowerInfo() {
+  const t = useContent();
   return (
     <section
       id="borrower-info"
@@ -620,7 +577,7 @@ export function BorrowerInfo() {
                     <item.icon size={22} />
                   </span>
                   <div className="min-w-0">
-                    {"tag" in item && item.tag && (
+                    {item.tag && (
                       <p className="mb-1.5 text-[0.78rem] font-medium uppercase tracking-[0.16em] text-[#e2b64f]">
                         {item.tag}
                       </p>
@@ -630,11 +587,11 @@ export function BorrowerInfo() {
                     </h3>
                   </div>
                 </div>
-                <p className="text-[1rem] leading-relaxed text-[#c6c5c1]">
+                <p className="whitespace-pre-line text-[1rem] leading-relaxed text-[#c6c5c1]">
                   {item.lead && (
                     <span className="font-semibold text-[#f4f2ee]">{item.lead} </span>
                   )}
-                  {item.body}
+                  <InfoText text={t[`info.${i}`] ?? ""} />
                 </p>
               </article>
             </Reveal>

@@ -94,19 +94,11 @@ function RegisterForm() {
       try {
         const { data, error } = await supabase.functions.invoke("send-lead", {
           body: {
-            name: isPartner
-              ? `${form.name} (партнёрская программа)`
-              : isInvestor
-                ? `${form.name} (инвестор)`
-                : form.name,
+            kind: isPartner ? "partner" : isInvestor ? "investor" : "borrower",
+            name: form.name,
             phone: form.phone,
-            amount: isPartner
-              ? ""
-              : isInvestor
-                ? [form.amount, form.term ? `срок: ${form.term}` : ""]
-                    .filter(Boolean)
-                    .join(", ")
-                : form.amount,
+            amount: isPartner ? "" : form.amount,
+            term: isInvestor ? form.term : "",
             email: form.email,
             fileUrls: isPartner || isInvestor ? [] : uploadedUrls,
             consents: consentsText,

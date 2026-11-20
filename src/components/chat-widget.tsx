@@ -1,35 +1,54 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { MessageCircle, Send, X } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
-type Message = { id: number; from: "user" | "bot"; text: string };
+type Message = { id: string; from: "user" | "bot"; text: string };
+type ServerMessage = { id: number; sender: "visitor" | "admin"; text: string };
 
 const GREETING =
   "Здравствуйте! Это «ФИНДРАЙВ». Напишите ваш вопрос — специалист ответит в ближайшее время.";
+const STORAGE_KEY = "findrive_chat_id";
 
-/** Уникальный идентификатор посетителя, чтобы менеджер видел ветку диалога. */
-function getVisitorId() {
+/** Уникальный идентификатор посетителя — по нему он видит ответы на свои сообщения. */
+function getVisitorId(create: boolean) {
   if (typeof window === "undefined") return "";
-  let id = window.localStorage.getItem("findrive_chat_id");
-  if (!id) {
-    id = Math.random().toString(36).slice(2, 8).toUpperCase();
-    window.localStorage.setItem("findrive_chat_id", id);
+  try {
+    let id = window.localStorage.getItem(STORAGE_KEY);
+    if (!id && create) {
+      const bytes = new Uint8Array(12);
+      crypto.getRandomValues(bytes);
+      id = Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
+      window.localStorage.setItem(STORAGE_KEY, id);
+    }
+    return id ?? "";
+  } catch {
+    return "";
   }
-  return id;
 }
+
+const toMessage = (m: ServerMessage): Message => ({
+  id: `s${m.id}`,
+  from: m.sender === "admin" ? "bot" : "user",
+  text: m.text,
+});
 
 export function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
   const [contact, setContact] = useState("");
   const [sending, setSending] = useState(false);
+  const [unread, setUnread] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { id: 0, from: "bot", text: GREETING },
+    { id: "greeting", from: "bot", text: GREETING },
   ]);
   const listRef = useRef<HTMLDivElement>(null);
+  const lastIdRef = useRef(0);
+  const historyLoadedRef = useRef(false);
+  const openRef = useRef(open);
+  openRef.current = open;
 
   // открытие по кнопке «Чат» в шапке и футере
   useEffect(() => {
@@ -39,25 +58,69 @@ export function ChatWidget() {
   }, []);
 
   useEffect(() => {
+    if (open) setUnread(false);
     listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, open]);
+
+  /** Подтягиваем ответы администратора (и историю при первом открытии). */
+  const poll = useCallback(async () => {
+    const visitorId = getVisitorId(false);
+    if (!visitorId) return;
+    try {
+      const { data, error } = await supabase.functions.invoke("chat-poll", {
+        body: { visitorId, afterId: lastIdRef.current },
+      });
+      if (error || !Array.isArray(data?.messages)) return;
+      const incoming: ServerMessage[] = data.messages;
+      if (!incoming.length) {
+        historyLoadedRef.current = true;
+        return;
+      }
+      lastIdRef.current = Math.max(lastIdRef.current, ...incoming.map((m) => m.id));
+
+      if (!historyLoadedRef.current) {
+        // первое обращение — восстанавливаем всю переписку
+        historyLoadedRef.current = true;
+        setMessages([{ id: "greeting", from: "bot", text: GREETING }, ...incoming.map(toMessage)]);
+        return;
+      }
+      // свои сообщения посетитель уже видит — добавляем только ответы
+      const replies = incoming.filter((m) => m.sender === "admin").map(toMessage);
+      if (replies.length) {
+        setMessages((prev) => [...prev, ...replies]);
+        if (!openRef.current) setUnread(true);
+      }
+    } catch {
+      // сеть или база недоступны — попробуем при следующем опросе
+    }
+  }, []);
+
+  // чаще, пока окно открыто; реже — чтобы показать значок нового ответа
+  useEffect(() => {
+    poll();
+    const timer = window.setInterval(poll, open ? 6000 : 45000);
+    return () => window.clearInterval(timer);
+  }, [open, poll]);
 
   const send = async () => {
     const value = text.trim();
     if (!value || sending) return;
     setSending(true);
-    setMessages((prev) => [...prev, { id: Date.now(), from: "user", text: value }]);
+    setMessages((prev) => [...prev, { id: `u${Date.now()}`, from: "user", text: value }]);
     setText("");
 
     try {
       const { data, error } = await supabase.functions.invoke("chat-message", {
-        body: { text: value, contact: contact.trim(), visitorId: getVisitorId() },
+        body: { text: value, contact: contact.trim(), visitorId: getVisitorId(true) },
       });
       if (error || !data?.success) throw new Error("send failed");
+      // собственное сообщение уже на экране — не дублируем его при опросе
+      if (typeof data.id === "number") lastIdRef.current = Math.max(lastIdRef.current, data.id);
+      historyLoadedRef.current = true;
       setMessages((prev) => [
         ...prev,
         {
-          id: Date.now() + 1,
+          id: `n${Date.now()}`,
           from: "bot",
           text: "Сообщение получено. Мы ответим вам в ближайшее время.",
         },
@@ -66,7 +129,7 @@ export function ChatWidget() {
       setMessages((prev) => [
         ...prev,
         {
-          id: Date.now() + 1,
+          id: `e${Date.now()}`,
           from: "bot",
           text: "Не удалось отправить сообщение. Позвоните нам: 8 (921) 988-88-80",
         },
@@ -111,6 +174,12 @@ export function ChatWidget() {
             </motion.span>
           )}
         </AnimatePresence>
+        {unread && !open && (
+          <span
+            aria-label="Новый ответ"
+            className="absolute right-0.5 top-0.5 h-3.5 w-3.5 rounded-full border-2 border-[#0b0a07] bg-[#e2564f]"
+          />
+        )}
       </motion.button>
 
       {/* окно чата */}

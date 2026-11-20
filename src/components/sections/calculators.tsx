@@ -32,6 +32,8 @@ function CalculatorNote({ className = "" }: { className?: string }) {
 export function LoanCalculator({ className, id }: { className?: string; id?: string }) {
   const router = useRouter();
   const [amount, setAmount] = useState(500_000);
+  // черновик ручного ввода суммы; null — показываем текущее значение
+  const [amountDraft, setAmountDraft] = useState<string | null>(null);
   const [term, setTerm] = useState(12);
   const [rate, setRate] = useState(6);
   const [consents, setConsents] = useState(EMPTY_CONSENTS);
@@ -44,6 +46,24 @@ export function LoanCalculator({ className, id }: { className?: string; id?: str
       return;
     }
     router.push(`/register?role=borrower&consent=${consents.marketing ? "all" : "required"}`);
+  };
+
+  const AMOUNT_MIN = 50_000;
+  const AMOUNT_MAX = 5_000_000;
+  const clampAmount = (n: number) => Math.min(AMOUNT_MAX, Math.max(AMOUNT_MIN, n));
+
+  const onAmountInput = (raw: string) => {
+    const digits = raw.replace(/\D/g, "").slice(0, 9);
+    setAmountDraft(digits ? fmt(Number(digits)) : "");
+    const n = Number(digits);
+    // расчёт обновляется сразу, пока введённая сумма в допустимых пределах
+    if (n >= AMOUNT_MIN && n <= AMOUNT_MAX) setAmount(n);
+  };
+  const commitAmount = () => {
+    if (amountDraft === null) return;
+    const n = Number(amountDraft.replace(/\D/g, ""));
+    setAmount(n ? clampAmount(n) : amount);
+    setAmountDraft(null);
   };
 
   // ежемесячный платёж — проценты за месяц: сумма × месячная ставка
@@ -62,14 +82,37 @@ export function LoanCalculator({ className, id }: { className?: string; id?: str
       <div className="space-y-7">
         <div>
           <div className="flex items-baseline justify-between gap-4 mb-1.5">
-            <label className="lux-label mb-0">Желаемая сумма займа</label>
-            <p className="display text-2xl lg:text-3xl text-gold whitespace-nowrap">
-              <AnimatedNumber value={amount} /> ₽
+            <label className="lux-label mb-0" htmlFor="loan-amount">
+              Желаемая сумма займа
+            </label>
+            <p className="display flex items-baseline text-2xl lg:text-3xl text-gold whitespace-nowrap">
+              <input
+                id="loan-amount"
+                type="text"
+                inputMode="numeric"
+                autoComplete="off"
+                aria-label="Желаемая сумма займа, рублей"
+                title="Введите сумму от 50 000 до 5 000 000 ₽"
+                value={amountDraft ?? fmt(amount)}
+                onFocus={(e) => {
+                  setAmountDraft(fmt(amount));
+                  e.currentTarget.select();
+                }}
+                onChange={(e) => onAmountInput(e.target.value)}
+                onBlur={commitAmount}
+                onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
+                size={Math.max(6, (amountDraft ?? fmt(amount)).length)}
+                className="w-auto min-w-0 border-b border-dashed border-[#e2b64f]/40 bg-transparent text-right text-gold outline-none transition-colors hover:border-[#e2b64f]/80 focus:border-solid focus:border-[#e2b64f]"
+              />
+              <span className="ml-1.5">₽</span>
             </p>
           </div>
           <Slider
             value={[amount]}
-            onValueChange={(v) => setAmount(v[0])}
+            onValueChange={(v) => {
+              setAmountDraft(null);
+              setAmount(v[0]);
+            }}
             min={50_000}
             max={5_000_000}
             step={50_000}

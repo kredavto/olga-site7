@@ -27,7 +27,7 @@ function CalculatorNote({ className = "" }: { className?: string }) {
 /* ------------------------------------------------------------------ */
 /* Loan calculator — identical math & ranges, glass luxury UI           */
 /* amount 50 000–5 000 000 step 50 000; term 1–12; rate 6–8 step 0.5   */
-/* annuity payment, approval 95%                                        */
+/* monthly payment = amount × monthly rate, approval 95%               */
 /* ------------------------------------------------------------------ */
 export function LoanCalculator({ className, id }: { className?: string; id?: string }) {
   const router = useRouter();
@@ -46,11 +46,11 @@ export function LoanCalculator({ className, id }: { className?: string; id?: str
     router.push(`/register?role=borrower&consent=${consents.marketing ? "all" : "required"}`);
   };
 
+  // ежемесячный платёж — проценты за месяц: сумма × месячная ставка
   const { monthly, probability } = useMemo(() => {
-    const r = rate / 100;
-    const payment = (amount * r) / (1 - Math.pow(1 + r, -term));
+    const payment = (amount * rate) / 100;
     return { monthly: Math.round(payment), probability: 95 };
-  }, [amount, term, rate]);
+  }, [amount, rate]);
 
   return (
     <div id={id} className={`glass-strong reflect rounded-3xl p-8 lg:p-10 ${className ?? ""}`}>
